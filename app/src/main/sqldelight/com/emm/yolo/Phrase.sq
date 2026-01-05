@@ -2,15 +2,19 @@ CREATE TABLE phrase (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 
     text TEXT NOT NULL,
-    context TEXT NOT NULL, -- MEETING, INTERVIEW, DAILY, TECH
 
-    status TEXT NOT NULL, -- NEW, PRACTICING, MASTERED
+    context TEXT NOT NULL,
+    -- DAILY, MEETING, INTERVIEW, TECH, GENERAL
 
+    status TEXT NOT NULL,
+    -- NEW, PRACTICING, MASTERED
+
+    last_practiced_at INTEGER,
     notes TEXT,
 
-    created_at INTEGER NOT NULL,
-    last_used_at INTEGER
+    created_at INTEGER NOT NULL
 );
+
 
 selectAll:
 SELECT * FROM phrase
@@ -20,7 +24,17 @@ selectByStatus:
 SELECT * FROM phrase
 WHERE status = ?;
 
-insert:
+updateStatus:
+UPDATE phrase
+SET
+    status = ?,
+    last_practiced_at = ?
+WHERE id = ?;
+
+deleteById:
+DELETE FROM phrase WHERE id = ?;
+
+insertPhrase:
 INSERT INTO phrase (
     text,
     context,
@@ -29,12 +43,13 @@ INSERT INTO phrase (
     created_at
 ) VALUES (?, ?, ?, ?, ?);
 
-updateStatus:
-UPDATE phrase
-SET
-    status = ?,
-    last_used_at = ?
-WHERE id = ?;
+getPhrasesByStatus:
+SELECT *
+FROM phrase
+WHERE status = ?
+ORDER BY created_at DESC;
 
-deleteById:
-DELETE FROM phrase WHERE id = ?;
+updatePhraseStatus:
+UPDATE phrase
+SET status = ?, last_practiced_at = ?
+WHERE id = ?;

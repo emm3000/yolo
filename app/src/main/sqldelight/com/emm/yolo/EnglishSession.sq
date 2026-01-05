@@ -1,23 +1,22 @@
 CREATE TABLE english_session (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 
-    -- Fecha
     session_date INTEGER NOT NULL, -- epoch millis (inicio del día)
 
-    -- Práctica
-    minutes_spoken INTEGER NOT NULL,
-    practice_type TEXT NOT NULL, -- SOLO, MEETING, INTERVIEW, EXPLANATION, OTHER
+    minutes_practiced INTEGER NOT NULL,
 
-    -- Emoción / fricción
+    practice_type TEXT NOT NULL,
+    -- SPEAKING, LISTENING, THINKING, READING, WRITING
+
+    confidence_level INTEGER NOT NULL, -- 1..5
     discomfort_level INTEGER NOT NULL, -- 1..5
 
-    -- Notas rápidas
     notes TEXT,
 
-    -- Auditoría
     created_at INTEGER NOT NULL,
     updated_at INTEGER NOT NULL
 );
+
 
 -- Una sesión por día (regla suave)
 CREATE UNIQUE INDEX english_session_unique_day
@@ -31,22 +30,12 @@ selectByDate:
 SELECT * FROM english_session
 WHERE session_date = ?;
 
-insert:
-INSERT INTO english_session (
-    session_date,
-    minutes_spoken,
-    practice_type,
-    discomfort_level,
-    notes,
-    created_at,
-    updated_at
-) VALUES (?, ?, ?, ?, ?, ?, ?);
-
 update:
 UPDATE english_session
 SET
-    minutes_spoken = ?,
+    minutes_practiced = ?,
     practice_type = ?,
+    confidence_level = ?,
     discomfort_level = ?,
     notes = ?,
     updated_at = ?
@@ -54,3 +43,31 @@ WHERE id = ?;
 
 deleteById:
 DELETE FROM english_session WHERE id = ?;
+
+insertSession:
+INSERT INTO english_session (
+    session_date,
+    minutes_practiced,
+    practice_type,
+    confidence_level,
+    discomfort_level,
+    notes,
+    created_at,
+    updated_at
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+getSessionsByDate:
+SELECT *
+FROM english_session
+WHERE session_date = ?
+ORDER BY created_at DESC;
+
+getTotalMinutes:
+SELECT SUM(minutes_practiced)
+FROM english_session;
+
+getLastSessions:
+SELECT *
+FROM english_session
+ORDER BY created_at DESC
+LIMIT ?;
