@@ -1,0 +1,28 @@
+CREATE TABLE daily_reflection (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+
+    reflection_date INTEGER NOT NULL,
+
+    -- Preguntas clave
+    biggest_struggle TEXT,
+    small_win TEXT,
+    improvement_for_tomorrow TEXT,
+
+    created_at INTEGER NOT NULL
+);
+
+CREATE UNIQUE INDEX daily_reflection_unique_day
+ON daily_reflection(reflection_date);
+
+selectByDate:
+SELECT * FROM daily_reflection
+WHERE reflection_date = ?;
+
+insert:
+INSERT INTO daily_reflection (
+    reflection_date,
+    biggest_struggle,
+    small_win,
+    improvement_for_tomorrow,
+    created_at
+) VALUES (?, ?, ?, ?, ?);

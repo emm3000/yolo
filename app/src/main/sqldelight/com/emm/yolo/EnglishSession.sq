@@ -1,0 +1,56 @@
+CREATE TABLE english_session (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+
+    -- Fecha
+    session_date INTEGER NOT NULL, -- epoch millis (inicio del día)
+
+    -- Práctica
+    minutes_spoken INTEGER NOT NULL,
+    practice_type TEXT NOT NULL, -- SOLO, MEETING, INTERVIEW, EXPLANATION, OTHER
+
+    -- Emoción / fricción
+    discomfort_level INTEGER NOT NULL, -- 1..5
+
+    -- Notas rápidas
+    notes TEXT,
+
+    -- Auditoría
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL
+);
+
+-- Una sesión por día (regla suave)
+CREATE UNIQUE INDEX english_session_unique_day
+ON english_session(session_date);
+
+selectAll:
+SELECT * FROM english_session
+ORDER BY session_date DESC;
+
+selectByDate:
+SELECT * FROM english_session
+WHERE session_date = ?;
+
+insert:
+INSERT INTO english_session (
+    session_date,
+    minutes_spoken,
+    practice_type,
+    discomfort_level,
+    notes,
+    created_at,
+    updated_at
+) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE english_session
+SET
+    minutes_spoken = ?,
+    practice_type = ?,
+    discomfort_level = ?,
+    notes = ?,
+    updated_at = ?
+WHERE id = ?;
+
+deleteById:
+DELETE FROM english_session WHERE id = ?;

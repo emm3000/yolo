@@ -1,0 +1,40 @@
+CREATE TABLE phrase (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+
+    text TEXT NOT NULL,
+    context TEXT NOT NULL, -- MEETING, INTERVIEW, DAILY, TECH
+
+    status TEXT NOT NULL, -- NEW, PRACTICING, MASTERED
+
+    notes TEXT,
+
+    created_at INTEGER NOT NULL,
+    last_used_at INTEGER
+);
+
+selectAll:
+SELECT * FROM phrase
+ORDER BY status, created_at DESC;
+
+selectByStatus:
+SELECT * FROM phrase
+WHERE status = ?;
+
+insert:
+INSERT INTO phrase (
+    text,
+    context,
+    status,
+    notes,
+    created_at
+) VALUES (?, ?, ?, ?, ?);
+
+updateStatus:
+UPDATE phrase
+SET
+    status = ?,
+    last_used_at = ?
+WHERE id = ?;
+
+deleteById:
+DELETE FROM phrase WHERE id = ?;
