@@ -177,7 +177,9 @@ fun SimpleActivityChart() {
 
             // Eje X simplificado
             Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text("14d ago", style = MaterialTheme.typography.labelSmall, color = Color.DarkGray)
@@ -211,7 +213,7 @@ fun PracticeDistributionChart(data: Map<String, Float>) {
                     Text("${(percentage * 100).toInt()}%", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
                 }
                 LinearProgressIndicator(
-                    progress = percentage,
+                    progress = { percentage },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(6.dp)
