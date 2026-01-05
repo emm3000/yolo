@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("app.cash.sqldelight") version libs.versions.androidDriver
+    kotlin("plugin.serialization") version libs.versions.kotlin
 }
 
 android {
@@ -62,6 +63,11 @@ dependencies {
 
     implementation(libs.android.driver)
     implementation(libs.coroutines.extensions)
+
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.kotlinx.serialization.json)
 }
 
 sqldelight {
