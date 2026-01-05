@@ -17,6 +17,15 @@ data object HistoryRoute : NavKey
 @Serializable
 data object InsightsRoute : NavKey
 
+@Serializable
+data object LogSessionRoute : NavKey
+
+@Serializable
+data object RulesRoute : NavKey
+
+@Serializable
+data object MainRoute : NavKey
+
 data class NavBarItem(
     val name: String,
     val icon: ImageVector,

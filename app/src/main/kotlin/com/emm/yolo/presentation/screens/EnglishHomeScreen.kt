@@ -34,7 +34,9 @@ import androidx.compose.ui.unit.dp
 import com.emm.yolo.presentation.theme.YoloTheme
 
 @Composable
-fun EnglishHome() {
+fun EnglishHome(
+    navigateToLogSession: () -> Unit = {},
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -120,7 +122,7 @@ fun EnglishHome() {
 
         // 4. Acción Principal
         Button(
-            onClick = { /* Log session */ },
+            onClick = navigateToLogSession,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp),

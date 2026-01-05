@@ -16,15 +16,49 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.emm.yolo.presentation.screens.EnglishHome
+import com.emm.yolo.presentation.screens.LogEnglishSessionScreen
 import com.emm.yolo.presentation.screens.PracticeHistoryScreen
+import com.emm.yolo.presentation.screens.PracticeRulesScreen
 import com.emm.yolo.presentation.screens.ProgressInsightsScreen
 
 @Composable
-fun RootNav(modifier: Modifier = Modifier) {
+fun RootNav() {
+
+    val navBackStack = rememberNavBackStack(MainRoute)
+
+    NavDisplay(
+        backStack = navBackStack,
+        onBack = { navBackStack.removeLastOrNull() },
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+        ),
+        entryProvider = entryProvider {
+            entry<MainRoute> {
+                MainRoot(navBackStack)
+            }
+            entry<LogSessionRoute> {
+                LogEnglishSessionScreen {
+                    navBackStack.removeLastOrNull()
+                }
+            }
+            entry<RulesRoute> {
+                PracticeRulesScreen()
+            }
+        }
+    )
+}
+
+@Composable
+private fun MainRoot(navBackStack: NavBackStack<NavKey>) {
 
     val navigationState: NavigationState = rememberNavigationState(
         startRoute = HomeRoute,
@@ -35,7 +69,9 @@ fun RootNav(modifier: Modifier = Modifier) {
 
     val entryProvider = entryProvider {
         entry<HomeRoute> {
-            EnglishHome()
+            EnglishHome {
+                navBackStack.add(LogSessionRoute)
+            }
         }
         entry<HistoryRoute> {
             PracticeHistoryScreen()
