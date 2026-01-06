@@ -1,4 +1,4 @@
-package com.emm.yolo.presentation.screens
+package com.emm.yolo.presentation.feature.log
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonDefaults.outlinedButtonBorder
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -44,7 +45,11 @@ import androidx.compose.ui.unit.dp
 import com.emm.yolo.presentation.theme.YoloTheme
 
 @Composable
-fun LogEnglishSessionScreen(onBack: () -> Unit) {
+fun LogEnglishSessionScreen(
+    state: LogEnglishSessionUiState = LogEnglishSessionUiState(),
+    onAction: (LogEnglishSessionAction) -> Unit = {},
+    onBack: () -> Unit,
+) {
 
     Column(
         modifier = Modifier
@@ -55,7 +60,6 @@ fun LogEnglishSessionScreen(onBack: () -> Unit) {
             .padding(24.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        // 1. Header
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -68,7 +72,7 @@ fun LogEnglishSessionScreen(onBack: () -> Unit) {
                     color = Color.White
                 )
                 Text(
-                    "Jan 4, 2026 • 11:28 PM",
+                    text = state.currentDateTime.toString(),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
@@ -80,7 +84,6 @@ fun LogEnglishSessionScreen(onBack: () -> Unit) {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // 2. Tipo de Práctica (Chips de alta respuesta)
         Text("Category", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
         FlowRow(
             modifier = Modifier
@@ -88,15 +91,16 @@ fun LogEnglishSessionScreen(onBack: () -> Unit) {
                 .padding(vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val categories = listOf("🎙 Speaking", "🎧 Listening", "✍️ Writing", "📖 Reading")
-            categories.forEach { category ->
+            PracticeType.entries.forEach { category ->
                 FilterChip(
-                    selected = false, // Manejar estado aquí
-                    onClick = { },
-                    label = { Text(category) },
+                    selected = category == state.practiceType,
+                    onClick = {
+                        onAction(LogEnglishSessionAction.SetPracticeType(category))
+                    },
+                    label = { Text(category.label) },
                     colors = FilterChipDefaults.filterChipColors(
                         containerColor = Color(0xFF2D3033),
-                        labelColor = Color.White
+                        labelColor = Color.White,
                     )
                 )
             }
@@ -114,7 +118,6 @@ fun LogEnglishSessionScreen(onBack: () -> Unit) {
             color = Color(0xFF2D3033)
         ) {
             Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                // Opción A: Audio
                 IconButton(
                     onClick = { /* Iniciar grabación */ },
                     modifier = Modifier
@@ -132,19 +135,17 @@ fun LogEnglishSessionScreen(onBack: () -> Unit) {
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 20.dp), color = Color.White.copy(alpha = 0.1f))
 
-                // Opción B: Texto
                 TextField(
-                    value = "",
-                    onValueChange = {},
+                    value = state.notes,
+                    onValueChange = {
+                        onAction(LogEnglishSessionAction.SetNotes(it))
+                    },
                     placeholder = { Text("What did you learn? (Optional)", color = Color.Gray) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
                         focusedTextColor = Color.White,
-                        cursorColor = Color.White
-//                        containerColor = Color.Transparent,
-//                        textColor = Color.White,
-//                        cursorColor = Color.White
+                        cursorColor = Color.White,
                     )
                 )
             }
@@ -152,23 +153,38 @@ fun LogEnglishSessionScreen(onBack: () -> Unit) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 4. Duración (Mentalidad: 5m es suficiente)
         Text("Duration", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-            listOf("5m", "10m", "20m", "30m+").forEach { time ->
-                OutlinedButton(onClick = { /* Select time */ }) {
-                    Text(time, color = Color.White)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Duration.entries.forEach { time ->
+                val isSelected = time == state.duration
+
+                OutlinedButton(
+                    onClick = {
+                        onAction(LogEnglishSessionAction.SetDuration(time))
+                    },
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = if (isSelected) Color(0xFF43E188) else Color(0xFF2D3033),
+                        contentColor = Color.White
+                    ),
+                    border = if (isSelected) null else outlinedButtonBorder(true),
+                ) {
+                    Text(time.label)
                 }
             }
         }
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // 6. Acción Final
         Button(
-            onClick = { /* Save immediate */ },
+            onClick = {
+                onAction(LogEnglishSessionAction.Submit)
+                onBack()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),

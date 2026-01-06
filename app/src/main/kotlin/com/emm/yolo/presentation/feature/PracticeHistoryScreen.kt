@@ -1,4 +1,4 @@
-package com.emm.yolo.presentation.screens
+package com.emm.yolo.presentation.feature
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

@@ -23,11 +23,13 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.emm.yolo.presentation.screens.EnglishHome
-import com.emm.yolo.presentation.screens.LogEnglishSessionScreen
-import com.emm.yolo.presentation.screens.PracticeHistoryScreen
-import com.emm.yolo.presentation.screens.PracticeRulesScreen
-import com.emm.yolo.presentation.screens.ProgressInsightsScreen
+import com.emm.yolo.presentation.feature.EnglishHome
+import com.emm.yolo.presentation.feature.PracticeHistoryScreen
+import com.emm.yolo.presentation.feature.PracticeRulesScreen
+import com.emm.yolo.presentation.feature.ProgressInsightsScreen
+import com.emm.yolo.presentation.feature.log.LogEnglishSessionScreen
+import com.emm.yolo.presentation.feature.log.LogEnglishSessionViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RootNav() {
@@ -46,9 +48,12 @@ fun RootNav() {
                 MainRoot(navBackStack)
             }
             entry<LogSessionRoute> {
-                LogEnglishSessionScreen {
-                    navBackStack.removeLastOrNull()
-                }
+                val vm: LogEnglishSessionViewModel = koinViewModel()
+                LogEnglishSessionScreen(
+                    state = vm.state,
+                    onAction = vm::onAction,
+                    onBack = navBackStack::removeLastOrNull,
+                )
             }
             entry<RulesRoute> {
                 PracticeRulesScreen()
