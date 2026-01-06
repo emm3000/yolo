@@ -183,7 +183,6 @@ fun LogEnglishSessionScreen(
         Button(
             onClick = {
                 onAction(LogEnglishSessionAction.Submit)
-                onBack()
             },
             modifier = Modifier
                 .fillMaxWidth()
