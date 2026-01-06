@@ -1,4 +1,4 @@
-CREATE TABLE audio_practice (
+CREATE TABLE AudioPractice (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 
     session_id INTEGER NOT NULL,
@@ -11,21 +11,21 @@ CREATE TABLE audio_practice (
     created_at INTEGER NOT NULL,
 
     FOREIGN KEY(session_id)
-    REFERENCES english_session(id)
+    REFERENCES EnglishSession(id)
     ON DELETE CASCADE
 );
 
 
 selectBySession:
-SELECT * FROM audio_practice
+SELECT * FROM AudioPractice
 WHERE session_id = ?
 ORDER BY created_at DESC;
 
 deleteById:
-DELETE FROM audio_practice WHERE id = ?;
+DELETE FROM AudioPractice WHERE id = ?;
 
 insertAudioPractice:
-INSERT INTO audio_practice (
+INSERT INTO AudioPractice (
     session_id,
     file_path,
     duration_seconds,
@@ -35,6 +35,6 @@ INSERT INTO audio_practice (
 
 getAudiosBySession:
 SELECT *
-FROM audio_practice
+FROM AudioPractice
 WHERE session_id = ?
 ORDER BY created_at DESC;

@@ -1,4 +1,4 @@
-CREATE TABLE phrase (
+CREATE TABLE Phrase (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 
     text TEXT NOT NULL,
@@ -17,25 +17,25 @@ CREATE TABLE phrase (
 
 
 selectAll:
-SELECT * FROM phrase
+SELECT * FROM Phrase
 ORDER BY status, created_at DESC;
 
 selectByStatus:
-SELECT * FROM phrase
+SELECT * FROM Phrase
 WHERE status = ?;
 
 updateStatus:
-UPDATE phrase
+UPDATE Phrase
 SET
     status = ?,
     last_practiced_at = ?
 WHERE id = ?;
 
 deleteById:
-DELETE FROM phrase WHERE id = ?;
+DELETE FROM Phrase WHERE id = ?;
 
 insertPhrase:
-INSERT INTO phrase (
+INSERT INTO Phrase (
     text,
     context,
     status,
@@ -45,11 +45,11 @@ INSERT INTO phrase (
 
 getPhrasesByStatus:
 SELECT *
-FROM phrase
+FROM Phrase
 WHERE status = ?
 ORDER BY created_at DESC;
 
 updatePhraseStatus:
-UPDATE phrase
+UPDATE Phrase
 SET status = ?, last_practiced_at = ?
 WHERE id = ?;

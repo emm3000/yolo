@@ -1,4 +1,4 @@
-package com.emm.yolo.presentation.feature
+package com.emm.yolo.presentation.feature.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -35,6 +35,7 @@ import com.emm.yolo.presentation.theme.YoloTheme
 
 @Composable
 fun EnglishHome(
+    state: EnglishHomeUiState = EnglishHomeUiState(),
     navigateToLogSession: () -> Unit = {},
 ) {
     Column(
@@ -52,7 +53,7 @@ fun EnglishHome(
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Sunday, Jan 4, 2026",
+                text = state.formattedDate,
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
             )
@@ -60,18 +61,15 @@ fun EnglishHome(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // 2. Estado del día (Presión psicológica)
-        val hasPracticed = false // Estado dinámico
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(180.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(if (hasPracticed) Color(0xFF1B3D2F) else Color(0xFF370000))
+                .background(if (state.hasPracticed) Color(0xFF1B3D2F) else Color(0xFF370000))
                 .border(
                     width = 1.dp,
-                    color = if (hasPracticed) Color(0xFF43E188) else Color(0xFFBA1A1A),
+                    color = if (state.hasPracticed) Color(0xFF43E188) else Color(0xFFBA1A1A),
                     shape = RoundedCornerShape(12.dp)
                 ),
             contentAlignment = Alignment.Center
@@ -84,10 +82,10 @@ fun EnglishHome(
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = if (hasPracticed) "PRACTICED" else "NOT PRACTICED",
+                    text = if (state.hasPracticed) "PRACTICED" else "NOT PRACTICED",
                     style = MaterialTheme.typography.displaySmall,
                     fontWeight = FontWeight.ExtraBold,
-                    color = if (hasPracticed) Color(0xFF43E188) else Color(0xFFBA1A1A)
+                    color = if (state.hasPracticed) Color(0xFF43E188) else Color(0xFFBA1A1A)
                 )
             }
         }
@@ -99,9 +97,9 @@ fun EnglishHome(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            MetricItem("Streak", "12", "days")
-            MetricItem("Total", "148", "sessions")
-            MetricItem("Month", "22", "active")
+            MetricItem("Streak", state.streak.toString(), "days")
+            MetricItem("Total", state.totalSessions.toString(), "sessions")
+            MetricItem("Month", state.monthSessions.toString(), "active")
         }
 
         Spacer(modifier = Modifier.weight(1f))

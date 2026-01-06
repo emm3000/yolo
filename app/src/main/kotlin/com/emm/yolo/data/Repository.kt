@@ -1,9 +1,13 @@
 package com.emm.yolo.data
 
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import com.emm.yolo.EmmDatabaseData
+import com.emm.yolo.EnglishSession
 import com.emm.yolo.presentation.feature.log.InsertSession
 import com.emm.yolo.presentation.share.currentTimeInMillis
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class Repository(db: EmmDatabaseData) {
@@ -21,5 +25,11 @@ class Repository(db: EmmDatabaseData) {
             created_at = currentTimeInMillis(),
             updated_at = currentTimeInMillis(),
         )
+    }
+
+    fun selectAllSessions(): Flow<List<EnglishSession>> {
+        return sessionDao.selectAll()
+            .asFlow()
+            .mapToList(Dispatchers.IO)
     }
 }

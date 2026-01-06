@@ -40,6 +40,25 @@ class LogEnglishSessionViewModel(private val repository: Repository) : ViewModel
     }
 }
 
+fun testDate(): List<InsertSession> {
+    val date: LocalDate = LocalDate.now()
+
+    return (1L..1000L).map {
+        InsertSession(
+            sessionDate = date.minusDays(it)
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli(),
+            minutesPracticed = Duration.FiveMinutes,
+            practiceType = PracticeType.Speaking,
+            confidenceLevel = 7085,
+            discomfortLevel = 4987,
+            notes = "atqui $it"
+        )
+    }
+
+}
+
 fun reducer(state: LogEnglishSessionUiState, action: LogEnglishSessionAction): LogEnglishSessionUiState {
     val newState: LogEnglishSessionUiState = when (action) {
         is LogEnglishSessionAction.SetDuration -> {

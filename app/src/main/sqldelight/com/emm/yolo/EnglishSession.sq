@@ -1,4 +1,4 @@
-CREATE TABLE english_session (
+CREATE TABLE EnglishSession (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 
     session_date INTEGER NOT NULL, -- epoch millis (inicio del día)
@@ -20,18 +20,18 @@ CREATE TABLE english_session (
 
 -- Una sesión por día (regla suave)
 CREATE UNIQUE INDEX english_session_unique_day
-ON english_session(session_date);
+ON EnglishSession(session_date);
 
 selectAll:
-SELECT * FROM english_session
+SELECT * FROM EnglishSession
 ORDER BY session_date DESC;
 
 selectByDate:
-SELECT * FROM english_session
+SELECT * FROM EnglishSession
 WHERE session_date = ?;
 
 update:
-UPDATE english_session
+UPDATE EnglishSession
 SET
     minutes_practiced = ?,
     practice_type = ?,
@@ -42,10 +42,10 @@ SET
 WHERE id = ?;
 
 deleteById:
-DELETE FROM english_session WHERE id = ?;
+DELETE FROM EnglishSession WHERE id = ?;
 
 insertSession:
-INSERT INTO english_session (
+INSERT INTO EnglishSession (
     session_date,
     minutes_practiced,
     practice_type,
@@ -58,16 +58,16 @@ INSERT INTO english_session (
 
 getSessionsByDate:
 SELECT *
-FROM english_session
+FROM EnglishSession
 WHERE session_date = ?
 ORDER BY created_at DESC;
 
 getTotalMinutes:
 SELECT SUM(minutes_practiced)
-FROM english_session;
+FROM EnglishSession;
 
 getLastSessions:
 SELECT *
-FROM english_session
+FROM EnglishSession
 ORDER BY created_at DESC
 LIMIT ?;

@@ -27,10 +27,11 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.emm.yolo.presentation.feature.EnglishHome
 import com.emm.yolo.presentation.feature.PracticeHistoryScreen
 import com.emm.yolo.presentation.feature.PracticeRulesScreen
 import com.emm.yolo.presentation.feature.ProgressInsightsScreen
+import com.emm.yolo.presentation.feature.home.EnglishHome
+import com.emm.yolo.presentation.feature.home.EnglishHomeViewModel
 import com.emm.yolo.presentation.feature.log.LogEnglishSessionScreen
 import com.emm.yolo.presentation.feature.log.LogEnglishSessionViewModel
 import com.emm.yolo.presentation.share.ResultEffect
@@ -105,9 +106,9 @@ private fun MainRoot(
 
     val entryProvider = entryProvider {
         entry<HomeRoute> {
-            EnglishHome {
-                navBackStack.add(LogSessionRoute)
-            }
+            val vm: EnglishHomeViewModel = koinViewModel()
+
+            EnglishHome(state = vm.state) { navBackStack.add(LogSessionRoute) }
         }
         entry<HistoryRoute> {
             PracticeHistoryScreen()
