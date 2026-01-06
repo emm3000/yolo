@@ -17,3 +17,7 @@ enum class Duration(
     TwentyMinutes(minutes = 20, label = "20m"),
     ThirtyMinutesPlus(minutes = 30, label = "30m+"),
 }
+
+fun Long.toDuration(): Duration {
+    return Duration.entries.find { it.minutes == this } ?: Duration.FiveMinutes
+}

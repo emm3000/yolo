@@ -17,6 +17,7 @@ class Repository(db: EmmDatabaseData) {
     suspend fun insertSession(insertSession: InsertSession) = withContext(Dispatchers.IO) {
         sessionDao.insertSession(
             session_date = insertSession.sessionDate,
+            session_hour = insertSession.sessionHour,
             minutes_practiced = insertSession.minutesPracticed.minutes,
             practice_type = insertSession.practiceType.name,
             confidence_level = insertSession.confidenceLevel,

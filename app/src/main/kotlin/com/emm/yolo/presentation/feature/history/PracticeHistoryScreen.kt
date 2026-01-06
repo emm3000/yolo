@@ -1,9 +1,10 @@
-package com.emm.yolo.presentation.feature
+package com.emm.yolo.presentation.feature.history
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Notes
@@ -29,17 +31,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.emm.yolo.presentation.feature.log.PracticeType
 import com.emm.yolo.presentation.theme.YoloTheme
 
 @Composable
-fun PracticeHistoryScreen() {
+fun PracticeHistoryScreen(
+    state: PracticeHistoryUiState = PracticeHistoryUiState(),
+    onAction: (PracticeHistoryAction) -> Unit = {},
+) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF1A1C1E))
             .padding(horizontal = 20.dp)
     ) {
-        // 1. Header
+
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "Practice History",
@@ -53,7 +60,6 @@ fun PracticeHistoryScreen() {
             color = Color.Gray
         )
 
-        // 2. Resumen rápido (Compacto)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -67,36 +73,55 @@ fun PracticeHistoryScreen() {
             SummaryStat("Avg time", "15m")
         }
 
-        // 3. Filtros
-        Row(
+        FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            listOf("All", "Speaking", "Listening", "Writing").forEachIndexed { index, label ->
-                FilterChipMinimal(label, isSelected = index == 0)
+            FilterChipMinimal(
+                label = "All",
+                isSelected = state.selectedPracticeType == null,
+                onClick = { onAction(PracticeHistoryAction.AllPracticeTypes) }
+            )
+            PracticeType.entries.forEach { practiceType ->
+                FilterChipMinimal(
+                    label = practiceType.label,
+                    isSelected = state.selectedPracticeType == practiceType,
+                    onClick = { onAction(PracticeHistoryAction.PickPracticeType(practiceType)) }
+                )
             }
         }
 
-        // 4. Lista de Sesiones (Núcleo)
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(bottom = 24.dp)
         ) {
-            // Ejemplo de item: Hoy
-            item { SessionItem("Today", "22:15", "Speaking", "10 min", hasAudio = true) }
-            // Ejemplo de item: Ayer
-            item { SessionItem("Yesterday", "08:30", "Listening", "20 min", hasText = true) }
-            // Ejemplo de item: Fecha fija
-            item { SessionItem("Dec 30", "19:00", "Reading", "5 min", hasText = true) }
+
+            items(state.filteredSessions, key = EnglishSessionUi::id) {
+                SessionItem(
+                    date = it.formattedSessionDate,
+                    time = it.formattedSessionHour,
+                    type = it.practiceType.name,
+                    duration = it.minutesPracticed.label,
+                    hasAudio = false,
+                    hasText = it.notes.isNullOrBlank().not()
+                )
+            }
         }
     }
 }
 
 @Composable
-fun SessionItem(date: String, time: String, type: String, duration: String, hasAudio: Boolean = false, hasText: Boolean = false) {
+fun SessionItem(
+    date: String,
+    time: String,
+    type: String,
+    duration: String,
+    hasAudio: Boolean = false,
+    hasText: Boolean = false
+) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = Color(0xFF222427),
@@ -146,15 +171,19 @@ fun SummaryStat(label: String, value: String) {
 }
 
 @Composable
-fun FilterChipMinimal(label: String, isSelected: Boolean) {
+fun FilterChipMinimal(
+    label: String,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+) {
     Surface(
         color = if (isSelected) Color(0xFFD1E4FF) else Color.Transparent,
         shape = RoundedCornerShape(16.dp),
         border = if (isSelected) null else BorderStroke(1.dp, Color.Gray),
-        onClick = {}
+        onClick = onClick,
     ) {
         Text(
-            label,
+            text = label,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
             style = MaterialTheme.typography.labelMedium,
             color = if (isSelected) Color(0xFF003147) else Color.Gray

@@ -3,6 +3,8 @@ CREATE TABLE EnglishSession (
 
     session_date INTEGER NOT NULL, -- epoch millis (inicio del día)
 
+    session_hour INTEGER NOT NULL,
+
     minutes_practiced INTEGER NOT NULL,
 
     practice_type TEXT NOT NULL,
@@ -47,6 +49,7 @@ DELETE FROM EnglishSession WHERE id = ?;
 insertSession:
 INSERT INTO EnglishSession (
     session_date,
+    session_hour,
     minutes_practiced,
     practice_type,
     confidence_level,
@@ -54,7 +57,7 @@ INSERT INTO EnglishSession (
     notes,
     created_at,
     updated_at
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 getSessionsByDate:
 SELECT *

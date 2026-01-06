@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.emm.yolo.data.Repository
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
 
 class LogEnglishSessionViewModel(private val repository: Repository) : ViewModel() {
@@ -28,6 +29,7 @@ class LogEnglishSessionViewModel(private val repository: Repository) : ViewModel
                     .atStartOfDay(ZoneId.systemDefault())
                     .toInstant()
                     .toEpochMilli(),
+                sessionHour = LocalTime.now().toSecondOfDay().toLong(),
                 minutesPracticed = state.duration,
                 practiceType = state.practiceType,
                 notes = state.notes,
@@ -49,6 +51,7 @@ fun testDate(): List<InsertSession> {
                 .atStartOfDay(ZoneId.systemDefault())
                 .toInstant()
                 .toEpochMilli(),
+            sessionHour = LocalTime.now().toSecondOfDay().toLong(),
             minutesPracticed = Duration.FiveMinutes,
             practiceType = PracticeType.Speaking,
             confidenceLevel = 7085,
