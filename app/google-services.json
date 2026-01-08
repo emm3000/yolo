@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "633112736228",
+    "project_id": "yolo-662c4",
+    "storage_bucket": "yolo-662c4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:633112736228:android:9ac65228531513a308d7f1",
+        "android_client_info": {
+          "package_name": "com.emm.yolo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCliYXRNc8b21QwND9Znq6xuKI92hGqR94"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

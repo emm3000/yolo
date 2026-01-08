@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("app.cash.sqldelight") version libs.versions.androidDriver
     kotlin("plugin.serialization") version libs.versions.kotlin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -77,10 +78,12 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
 
-    implementation("androidx.media3:media3-exoplayer:1.9.0")
-    implementation("androidx.media3:media3-exoplayer-dash:1.9.0")
-    implementation("androidx.media3:media3-ui:1.9.0")
-    implementation("androidx.media3:media3-ui-compose:1.9.0")
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.dash)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.ui.compose)
+
+    implementation(platform(libs.firebase.bom))
 }
 
 sqldelight {
