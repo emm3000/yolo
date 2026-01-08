@@ -1,16 +1,16 @@
 CREATE TABLE AudioPractice (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 
-    session_id INTEGER NOT NULL,
+    sessionId INTEGER NOT NULL,
 
-    file_path TEXT NOT NULL,
-    duration_seconds INTEGER NOT NULL,
+    filePath TEXT NOT NULL,
+    durationSeconds INTEGER NOT NULL,
 
     prompt TEXT, -- "Explain what you did today"
 
-    created_at INTEGER NOT NULL,
+    createdAt INTEGER NOT NULL,
 
-    FOREIGN KEY(session_id)
+    FOREIGN KEY(sessionId)
     REFERENCES EnglishSession(id)
     ON DELETE CASCADE
 );
@@ -18,23 +18,23 @@ CREATE TABLE AudioPractice (
 
 selectBySession:
 SELECT * FROM AudioPractice
-WHERE session_id = ?
-ORDER BY created_at DESC;
+WHERE sessionId = ?
+ORDER BY createdAt DESC;
 
 deleteById:
 DELETE FROM AudioPractice WHERE id = ?;
 
 insertAudioPractice:
 INSERT INTO AudioPractice (
-    session_id,
-    file_path,
-    duration_seconds,
+    sessionId,
+    filePath,
+    durationSeconds,
     prompt,
-    created_at
+    createdAt
 ) VALUES (?, ?, ?, ?, ?);
 
 getAudiosBySession:
 SELECT *
 FROM AudioPractice
-WHERE session_id = ?
-ORDER BY created_at DESC;
+WHERE sessionId = ?
+ORDER BY createdAt DESC;

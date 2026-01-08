@@ -9,16 +9,16 @@ CREATE TABLE Phrase (
     status TEXT NOT NULL,
     -- NEW, PRACTICING, MASTERED
 
-    last_practiced_at INTEGER,
+    lastPracticedAt INTEGER,
     notes TEXT,
 
-    created_at INTEGER NOT NULL
+    createdAt INTEGER NOT NULL
 );
 
 
 selectAll:
 SELECT * FROM Phrase
-ORDER BY status, created_at DESC;
+ORDER BY status, createdAt DESC;
 
 selectByStatus:
 SELECT * FROM Phrase
@@ -28,7 +28,7 @@ updateStatus:
 UPDATE Phrase
 SET
     status = ?,
-    last_practiced_at = ?
+    lastPracticedAt = ?
 WHERE id = ?;
 
 deleteById:
@@ -40,16 +40,16 @@ INSERT INTO Phrase (
     context,
     status,
     notes,
-    created_at
+    createdAt
 ) VALUES (?, ?, ?, ?, ?);
 
 getPhrasesByStatus:
 SELECT *
 FROM Phrase
 WHERE status = ?
-ORDER BY created_at DESC;
+ORDER BY createdAt DESC;
 
 updatePhraseStatus:
 UPDATE Phrase
-SET status = ?, last_practiced_at = ?
+SET status = ?, lastPracticedAt = ?
 WHERE id = ?;

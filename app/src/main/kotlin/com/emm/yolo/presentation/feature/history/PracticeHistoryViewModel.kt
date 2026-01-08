@@ -95,17 +95,17 @@ class PracticeHistoryViewModel(private val repository: Repository) : ViewModel()
         EnglishSessionUi(
             id = session.id,
             sessionDate = Instant
-                .ofEpochMilli(session.session_date)
+                .ofEpochMilli(session.sessionDate)
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate(),
-            sessionHour = LocalTime.ofSecondOfDay(session.session_hour),
-            minutesPracticed = session.minutes_practiced.toDuration(),
-            practiceType = PracticeType.valueOf(session.practice_type),
-            confidenceLevel = session.confidence_level,
-            discomfortLevel = session.discomfort_level,
+            sessionHour = LocalTime.ofSecondOfDay(session.sessionHour),
+            minutesPracticed = session.minutesPracticed.toDuration(),
+            practiceType = PracticeType.valueOf(session.practiceType),
+            confidenceLevel = session.confidenceLevel,
+            discomfortLevel = session.discomfortLevel,
             notes = session.notes,
-            createdAt = session.created_at,
-            updatedAt = session.updated_at,
+            createdAt = session.createdAt,
+            updatedAt = session.updatedAt,
         )
     }
 

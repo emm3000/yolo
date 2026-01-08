@@ -1,46 +1,45 @@
 CREATE TABLE EnglishSession (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 
-    session_date INTEGER NOT NULL, -- epoch millis (inicio del día)
+    sessionDate INTEGER NOT NULL, -- epoch millis (inicio del día)
 
-    session_hour INTEGER NOT NULL,
+    sessionHour INTEGER NOT NULL,
 
-    minutes_practiced INTEGER NOT NULL,
+    minutesPracticed INTEGER NOT NULL,
 
-    practice_type TEXT NOT NULL,
+    practiceType TEXT NOT NULL,
     -- SPEAKING, LISTENING, THINKING, READING, WRITING
 
-    confidence_level INTEGER NOT NULL, -- 1..5
-    discomfort_level INTEGER NOT NULL, -- 1..5
+    confidenceLevel INTEGER NOT NULL, -- 1..5
+    discomfortLevel INTEGER NOT NULL, -- 1..5
 
     notes TEXT,
 
-    created_at INTEGER NOT NULL,
-    updated_at INTEGER NOT NULL
+    createdAt INTEGER NOT NULL,
+    updatedAt INTEGER NOT NULL
 );
-
 
 -- Una sesión por día (regla suave)
 CREATE UNIQUE INDEX english_session_unique_day
-ON EnglishSession(session_date);
+ON EnglishSession(sessionDate);
 
 selectAll:
 SELECT * FROM EnglishSession
-ORDER BY session_date DESC;
+ORDER BY sessionDate DESC;
 
 selectByDate:
 SELECT * FROM EnglishSession
-WHERE session_date = ?;
+WHERE sessionDate = ?;
 
 update:
 UPDATE EnglishSession
 SET
-    minutes_practiced = ?,
-    practice_type = ?,
-    confidence_level = ?,
-    discomfort_level = ?,
+    minutesPracticed = ?,
+    practiceType = ?,
+    confidenceLevel = ?,
+    discomfortLevel = ?,
     notes = ?,
-    updated_at = ?
+    updatedAt = ?
 WHERE id = ?;
 
 deleteById:
@@ -48,29 +47,29 @@ DELETE FROM EnglishSession WHERE id = ?;
 
 insertSession:
 INSERT INTO EnglishSession (
-    session_date,
-    session_hour,
-    minutes_practiced,
-    practice_type,
-    confidence_level,
-    discomfort_level,
+    sessionDate,
+    sessionHour,
+    minutesPracticed,
+    practiceType,
+    confidenceLevel,
+    discomfortLevel,
     notes,
-    created_at,
-    updated_at
+    createdAt,
+    updatedAt
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 getSessionsByDate:
 SELECT *
 FROM EnglishSession
-WHERE session_date = ?
-ORDER BY created_at DESC;
+WHERE sessionDate = ?
+ORDER BY createdAt DESC;
 
 getTotalMinutes:
-SELECT SUM(minutes_practiced)
+SELECT SUM(minutesPracticed)
 FROM EnglishSession;
 
 getLastSessions:
 SELECT *
 FROM EnglishSession
-ORDER BY created_at DESC
+ORDER BY createdAt DESC
 LIMIT ?;

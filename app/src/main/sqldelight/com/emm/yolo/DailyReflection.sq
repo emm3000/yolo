@@ -1,33 +1,33 @@
 CREATE TABLE DailyReflection (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 
-    reflection_date INTEGER NOT NULL, -- epoch millis (inicio del día)
+    reflectionDate INTEGER NOT NULL, -- epoch millis (inicio del día)
 
-    biggest_struggle TEXT,
-    small_win TEXT,
-    improvement_for_tomorrow TEXT,
+    biggestStruggle TEXT,
+    smallWin TEXT,
+    improvementForTomorrow TEXT,
 
-    created_at INTEGER NOT NULL
+    createdAt INTEGER NOT NULL
 );
 
 
 CREATE UNIQUE INDEX daily_reflection_unique_day
-ON DailyReflection(reflection_date);
+ON DailyReflection(reflectionDate);
 
 selectByDate:
 SELECT * FROM DailyReflection
-WHERE reflection_date = ?;
+WHERE reflectionDate = ?;
 
 insertDailyReflection:
 INSERT INTO DailyReflection (
-    reflection_date,
-    biggest_struggle,
-    small_win,
-    improvement_for_tomorrow,
-    created_at
+    reflectionDate,
+    biggestStruggle,
+    smallWin,
+    improvementForTomorrow,
+    createdAt
 ) VALUES (?, ?, ?, ?, ?);
 
 getReflectionByDate:
 SELECT *
 FROM DailyReflection
-WHERE reflection_date = ?;
+WHERE reflectionDate = ?;

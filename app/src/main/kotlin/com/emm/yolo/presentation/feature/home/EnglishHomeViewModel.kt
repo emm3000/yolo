@@ -25,7 +25,7 @@ class EnglishHomeViewModel(private val repository: Repository) : ViewModel() {
     fun fetchHomeData() = viewModelScope.launch {
         repository.selectAllSessions()
             .map { englishSessions ->
-                val sessionDates: List<Long> = englishSessions.map(EnglishSession::session_date)
+                val sessionDates: List<Long> = englishSessions.map(EnglishSession::sessionDate)
                 val today: Long = LocalDate.now()
                     .atStartOfDay(ZoneId.systemDefault())
                     .toInstant()

@@ -17,15 +17,15 @@ class Repository(db: EmmDatabaseData) {
 
     suspend fun insertSession(insertSession: InsertSession): Long = withContext(Dispatchers.IO) {
         sessionDao.insertSession(
-            session_date = insertSession.sessionDate,
-            session_hour = insertSession.sessionHour,
-            minutes_practiced = insertSession.minutesPracticed.minutes,
-            practice_type = insertSession.practiceType.name,
-            confidence_level = insertSession.confidenceLevel,
-            discomfort_level = insertSession.discomfortLevel,
+            sessionDate = insertSession.sessionDate,
+            sessionHour = insertSession.sessionHour,
+            minutesPracticed = insertSession.minutesPracticed.minutes,
+            practiceType = insertSession.practiceType.name,
+            confidenceLevel = insertSession.confidenceLevel,
+            discomfortLevel = insertSession.discomfortLevel,
             notes = insertSession.notes,
-            created_at = currentTimeInMillis(),
-            updated_at = currentTimeInMillis(),
+            createdAt = currentTimeInMillis(),
+            updatedAt = currentTimeInMillis(),
         )
         val executeAsOne: EnglishSession = sessionDao.selectByDate(insertSession.sessionDate)
             .executeAsOne()
@@ -39,11 +39,11 @@ class Repository(db: EmmDatabaseData) {
         prompt: String?
     ) = withContext(Dispatchers.IO) {
         audioDao.insertAudioPractice(
-            session_id = sessionId,
-            file_path = filePath,
-            duration_seconds = durationSeconds,
+            sessionId = sessionId,
+            filePath = filePath,
+            durationSeconds = durationSeconds,
             prompt = prompt,
-            created_at = currentTimeInMillis(),
+            createdAt = currentTimeInMillis(),
         )
     }
 
