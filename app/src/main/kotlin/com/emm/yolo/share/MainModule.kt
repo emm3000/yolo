@@ -1,7 +1,6 @@
 package com.emm.yolo.share
 
 import com.emm.yolo.EmmDatabaseData
-import com.emm.yolo.data.Repository
 import com.emm.yolo.data.provideSqlDriver
 import com.emm.yolo.feature.history.PracticeHistoryViewModel
 import com.emm.yolo.feature.home.EnglishHomeViewModel
@@ -9,6 +8,7 @@ import com.emm.yolo.feature.log.AudioPlayer
 import com.emm.yolo.feature.log.AudioRecordMachine
 import com.emm.yolo.feature.log.AudioRecordMachineImpl
 import com.emm.yolo.feature.log.LogEnglishSessionViewModel
+import com.emm.yolo.feature.log.LogRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -22,7 +22,7 @@ val mainModule = module {
     viewModelOf(::EnglishHomeViewModel)
     viewModelOf(::PracticeHistoryViewModel)
 
-    singleOf(::Repository)
+    singleOf(::LogRepository)
 
     factory {
         AudioRecordMachineImpl(

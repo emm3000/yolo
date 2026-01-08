@@ -1,4 +1,4 @@
-package com.emm.yolo.data
+package com.emm.yolo.feature.log
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
-class Repository(db: EmmDatabaseData) {
+class LogRepository(db: EmmDatabaseData) {
 
     private val sessionDao = db.englishSessionQueries
     private val audioDao = db.audioPracticeQueries
@@ -26,16 +26,21 @@ class Repository(db: EmmDatabaseData) {
             createdAt = currentTimeInMillis(),
             updatedAt = currentTimeInMillis(),
         )
-        val executeAsOne: EnglishSession = sessionDao.selectByDate(insertSession.sessionDate)
-            .executeAsOne()
-        return@withContext executeAsOne.id
+
+        val insertedSession: EnglishSession = selectSessionByDate(insertSession.sessionDate)
+
+        return@withContext insertedSession.id
+    }
+
+    suspend fun selectSessionByDate(sessionDate: Long): EnglishSession = withContext(Dispatchers.IO) {
+        sessionDao.selectByDate(sessionDate).executeAsOne()
     }
 
     suspend fun insertAudio(
         sessionId: Long,
         filePath: String,
         durationSeconds: Long,
-        prompt: String?
+        prompt: String?,
     ) = withContext(Dispatchers.IO) {
         audioDao.insertAudioPractice(
             sessionId = sessionId,

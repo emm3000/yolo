@@ -5,7 +5,6 @@ package com.emm.yolo.feature.log
 import android.content.Context
 import android.media.MediaRecorder
 import android.os.Build
-import com.emm.yolo.data.AudioRecord
 import java.io.File
 
 class AudioRecordMachineImpl(private val context: Context) : AudioRecordMachine {

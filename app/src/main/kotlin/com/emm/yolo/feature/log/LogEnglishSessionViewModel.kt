@@ -7,9 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.emm.yolo.data.AudioRecord
-import com.emm.yolo.data.InsertSession
-import com.emm.yolo.data.Repository
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
@@ -17,7 +14,7 @@ import java.time.ZoneId
 import kotlin.random.Random
 
 class LogEnglishSessionViewModel(
-    private val repository: Repository,
+    private val logRepository: LogRepository,
     private val audioRecordMachine: AudioRecordMachine,
     playerFactory: AudioPlayer.Factory,
     application: Application,
@@ -90,10 +87,6 @@ class LogEnglishSessionViewModel(
         )
     }
 
-    fun save() {
-        state = state.copy(playerState = PlayerState.Idle)
-    }
-
     private fun insertSession() = viewModelScope.launch {
         try {
             val insertSession = InsertSession(
@@ -106,9 +99,9 @@ class LogEnglishSessionViewModel(
                 practiceType = state.practiceType,
                 notes = state.notes,
             )
-            val sessionId: Long = repository.insertSession(insertSession)
+            val sessionId: Long = logRepository.insertSession(insertSession)
             state.records.forEach { audioRecord ->
-                repository.insertAudio(
+                logRepository.insertAudio(
                     sessionId = sessionId,
                     filePath = audioRecord.path,
                     durationSeconds = Random.nextLong(),

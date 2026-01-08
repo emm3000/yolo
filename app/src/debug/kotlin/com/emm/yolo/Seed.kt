@@ -1,7 +1,7 @@
 package com.emm.yolo
 
-import com.emm.yolo.data.InsertSession
 import com.emm.yolo.feature.log.Duration
+import com.emm.yolo.feature.log.InsertSession
 import com.emm.yolo.feature.log.PracticeType
 import java.time.LocalDate
 import java.time.LocalTime

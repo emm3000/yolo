@@ -1,7 +1,5 @@
 package com.emm.yolo.feature.log
 
-import com.emm.yolo.data.AudioRecord
-
 sealed interface LogEnglishSessionAction {
 
     data class SetPracticeType(val practiceType: PracticeType) : LogEnglishSessionAction

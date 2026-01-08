@@ -6,13 +6,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emm.yolo.EnglishSession
-import com.emm.yolo.data.Repository
+import com.emm.yolo.feature.log.LogRepository
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZoneId
 
-class EnglishHomeViewModel(private val repository: Repository) : ViewModel() {
+class EnglishHomeViewModel(private val logRepository: LogRepository) : ViewModel() {
 
     var state by mutableStateOf(EnglishHomeUiState())
         private set
@@ -22,7 +22,7 @@ class EnglishHomeViewModel(private val repository: Repository) : ViewModel() {
     }
 
     fun fetchHomeData() = viewModelScope.launch {
-        repository.selectAllSessions()
+        logRepository.selectAllSessions()
             .map { englishSessions ->
                 val sessionDates: List<Long> = englishSessions.map(EnglishSession::sessionDate)
                 val today: Long = LocalDate.now()

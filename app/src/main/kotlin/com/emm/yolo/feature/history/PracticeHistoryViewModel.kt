@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emm.yolo.EnglishSession
-import com.emm.yolo.data.Repository
 import com.emm.yolo.feature.log.Duration
+import com.emm.yolo.feature.log.LogRepository
 import com.emm.yolo.feature.log.PracticeType
 import com.emm.yolo.feature.log.toDuration
 import kotlinx.coroutines.flow.launchIn
@@ -61,7 +61,7 @@ sealed interface PracticeHistoryAction {
     data class PickPracticeType(val practiceType: PracticeType) : PracticeHistoryAction
 }
 
-class PracticeHistoryViewModel(private val repository: Repository) : ViewModel() {
+class PracticeHistoryViewModel(private val logRepository: LogRepository) : ViewModel() {
 
     var state by mutableStateOf(PracticeHistoryUiState())
         private set
@@ -82,7 +82,7 @@ class PracticeHistoryViewModel(private val repository: Repository) : ViewModel()
     }
 
     fun fetchAll() {
-        repository.selectAllSessions()
+        logRepository.selectAllSessions()
             .map(::mapToUi)
             .onEach { sessionUis ->
                 val filteredSession: List<EnglishSessionUi> = filteringSessions(sessionUis)
