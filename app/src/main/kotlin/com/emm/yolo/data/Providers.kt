@@ -1,4 +1,4 @@
-package com.emm.yolo.share
+package com.emm.yolo.data
 
 import android.content.Context
 import androidx.sqlite.db.SupportSQLiteDatabase
