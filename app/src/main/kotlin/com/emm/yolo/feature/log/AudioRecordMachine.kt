@@ -1,4 +1,6 @@
-package com.emm.yolo.feature.log.recorder
+package com.emm.yolo.feature.log
+
+import com.emm.yolo.data.AudioRecord
 
 interface AudioRecordMachine {
 

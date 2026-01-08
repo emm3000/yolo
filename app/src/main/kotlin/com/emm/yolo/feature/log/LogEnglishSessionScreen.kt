@@ -60,7 +60,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.emm.yolo.feature.log.recorder.AudioRecord
+import com.emm.yolo.data.AudioRecord
 import com.emm.yolo.share.theme.BackgroundColor
 import com.emm.yolo.share.theme.YoloTheme
 

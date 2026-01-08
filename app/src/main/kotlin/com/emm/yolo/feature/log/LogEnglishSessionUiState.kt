@@ -1,6 +1,6 @@
 package com.emm.yolo.feature.log
 
-import com.emm.yolo.feature.log.recorder.AudioRecord
+import com.emm.yolo.data.AudioRecord
 import java.time.LocalDateTime
 
 data class LogEnglishSessionUiState(

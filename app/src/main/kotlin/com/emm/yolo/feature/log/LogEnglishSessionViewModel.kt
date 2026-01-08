@@ -10,9 +10,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
+import com.emm.yolo.data.AudioRecord
+import com.emm.yolo.data.InsertSession
 import com.emm.yolo.data.Repository
-import com.emm.yolo.feature.log.recorder.AudioRecord
-import com.emm.yolo.feature.log.recorder.AudioRecordMachine
 import kotlinx.coroutines.launch
 import java.io.File
 import java.time.LocalDate

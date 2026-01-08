@@ -1,4 +1,7 @@
-package com.emm.yolo.feature.log
+package com.emm.yolo.data
+
+import com.emm.yolo.feature.log.Duration
+import com.emm.yolo.feature.log.PracticeType
 
 class InsertSession(
     val sessionDate: Long,

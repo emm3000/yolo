@@ -4,7 +4,6 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import com.emm.yolo.EmmDatabaseData
 import com.emm.yolo.EnglishSession
-import com.emm.yolo.feature.log.InsertSession
 import com.emm.yolo.share.currentTimeInMillis
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

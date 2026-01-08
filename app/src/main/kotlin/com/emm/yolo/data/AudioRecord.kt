@@ -1,4 +1,4 @@
-package com.emm.yolo.feature.log.recorder
+package com.emm.yolo.data
 
 data class AudioRecord(
     val path: String,
