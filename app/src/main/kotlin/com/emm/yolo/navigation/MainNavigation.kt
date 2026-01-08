@@ -45,7 +45,7 @@ import com.emm.yolo.share.ResultEventBus
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun RootNav() {
+fun MainNavigation() {
 
     val navBackStack = rememberNavBackStack(MainRoute)
 
@@ -86,9 +86,7 @@ fun RootNav() {
 
                 val launcher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestPermission(),
-                    onResult = {
-
-                    }
+                    onResult = {}
                 )
 
                 LaunchedEffect(Unit) {

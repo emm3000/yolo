@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import com.emm.yolo.navigation.RootNav
+import com.emm.yolo.navigation.MainNavigation
 import com.emm.yolo.share.theme.YoloTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             YoloTheme {
-                RootNav()
+                MainNavigation()
             }
         }
     }
