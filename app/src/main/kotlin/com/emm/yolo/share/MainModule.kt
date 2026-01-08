@@ -5,6 +5,7 @@ import com.emm.yolo.data.Repository
 import com.emm.yolo.data.provideSqlDriver
 import com.emm.yolo.feature.history.PracticeHistoryViewModel
 import com.emm.yolo.feature.home.EnglishHomeViewModel
+import com.emm.yolo.feature.log.AudioPlayer
 import com.emm.yolo.feature.log.AudioRecordMachine
 import com.emm.yolo.feature.log.AudioRecordMachineImpl
 import com.emm.yolo.feature.log.LogEnglishSessionViewModel
@@ -28,4 +29,6 @@ val mainModule = module {
             context = androidContext()
         )
     } bind AudioRecordMachine::class
+
+    factory { AudioPlayer.Factory() }
 }
