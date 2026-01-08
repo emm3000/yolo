@@ -41,7 +41,6 @@ fun PracticeRulesScreen() {
             .padding(horizontal = 20.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        // 1. Header
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "Practice Rules",
@@ -56,7 +55,6 @@ fun PracticeRulesScreen() {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // 2. Session Validity Rules (El "Linter" de tu esfuerzo)
         RuleSectionTitle("Session Validity")
         Surface(
             color = Color(0xFF222427),
@@ -88,7 +86,6 @@ fun PracticeRulesScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 3. Practice Types
         RuleSectionTitle("Valid Practice Types")
         Column(modifier = Modifier.fillMaxWidth()) {
             val types = listOf("Speaking", "Listening", "Writing", "Reading")
@@ -112,7 +109,6 @@ fun PracticeRulesScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 4. Streak Logic (Hardcoded rules)
         RuleSectionTitle("Streak Logic")
         Surface(
             color = Color(0xFF222427).copy(alpha = 0.5f),
@@ -129,7 +125,6 @@ fun PracticeRulesScreen() {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // 6. Reminder Settings
         RuleSectionTitle("Notifications")
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -142,7 +137,6 @@ fun PracticeRulesScreen() {
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        // 7. Data Integrity (Danger Zone)
         HorizontalDivider(color = Color(0xFF44474A))
         Spacer(modifier = Modifier.height(24.dp))
 

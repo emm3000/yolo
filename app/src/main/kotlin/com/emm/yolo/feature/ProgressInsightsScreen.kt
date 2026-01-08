@@ -41,7 +41,6 @@ fun ProgressInsightsScreen() {
             .padding(horizontal = 20.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        // 1. Header
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "Progress Insights",
@@ -56,7 +55,6 @@ fun ProgressInsightsScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 2. Resumen Clave (Eficiencia del sistema)
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -68,7 +66,6 @@ fun ProgressInsightsScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 3. Distribución de Práctica (Detección de sesgos)
         Text("Skill Distribution", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
         PracticeDistributionChart(
             mapOf("Speaking" to 0.15f, "Listening" to 0.50f, "Writing" to 0.10f, "Reading" to 0.25f)
@@ -76,13 +73,11 @@ fun ProgressInsightsScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 4. Tendencia Temporal (Actividad Semanal)
         Text("Weekly Activity", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
         SimpleActivityChart()
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 5. Insight Automático (Hechos, no juicios)
         Surface(
             color = Color(0xFF2D3033),
             shape = RoundedCornerShape(8.dp),
@@ -101,7 +96,6 @@ fun ProgressInsightsScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 6. Reflexión Técnica (Log de notas)
         Text("Technical Observations", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
         OutlinedTextField(
             value = "Focusing on listening during commutes. Need to reduce friction for speaking sessions after 6 PM.",
@@ -113,9 +107,6 @@ fun ProgressInsightsScreen() {
             textStyle = MaterialTheme.typography.bodySmall,
             colors = TextFieldDefaults.colors(
                 focusedTextColor = Color.White
-//                focusedBorderColor = Color.Gray,
-//                unfocusedBorderColor = Color(0xFF44474A),
-//                textColor = Color.White
             )
         )
 
@@ -133,7 +124,6 @@ fun SimpleActivityChart() {
             .padding(vertical = 12.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            // Leyenda simple
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -145,7 +135,6 @@ fun SimpleActivityChart() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Gráfico de Barras Minimalista
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -153,10 +142,9 @@ fun SimpleActivityChart() {
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.Bottom
             ) {
-                // Simulación de datos: Altura representa minutos de práctica
                 val weeklyData = listOf(
-                    0.2f, 0.5f, 0.8f, 0.1f, 0.0f, 0.9f, 0.4f, // Semana pasada
-                    0.6f, 1.0f, 0.3f, 0.0f, 0.7f, 0.5f, 0.2f  // Esta semana
+                    0.2f, 0.5f, 0.8f, 0.1f, 0.0f, 0.9f, 0.4f,
+                    0.6f, 1.0f, 0.3f, 0.0f, 0.7f, 0.5f, 0.2f
                 )
 
                 weeklyData.forEach { heightMultiplier ->
@@ -167,16 +155,15 @@ fun SimpleActivityChart() {
                             .clip(RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp))
                             .background(
                                 when {
-                                    heightMultiplier >= 0.8f -> Color(0xFF43E188) // High intensity
-                                    heightMultiplier > 0.0f -> Color(0xFFA8C7FF)  // Normal
-                                    else -> Color(0xFF370000) // Day missed (Deep red)
+                                    heightMultiplier >= 0.8f -> Color(0xFF43E188)
+                                    heightMultiplier > 0.0f -> Color(0xFFA8C7FF)
+                                    else -> Color(0xFF370000)
                                 }
                             )
                     )
                 }
             }
 
-            // Eje X simplificado
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

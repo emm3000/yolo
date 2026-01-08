@@ -154,7 +154,6 @@ fun SessionItem(
                 }
             }
 
-            // Indicadores de contenido
             Row {
                 if (hasAudio) Icon(Icons.Default.Mic, contentDescription = null, tint = Color.Gray, modifier = Modifier.size(18.dp))
                 if (hasText) Icon(Icons.AutoMirrored.Filled.Notes, contentDescription = null, tint = Color.Gray, modifier = Modifier.size(18.dp))

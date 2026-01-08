@@ -294,7 +294,7 @@ fun RecordingView(onStopClick: () -> Unit) {
     val infiniteTransition = rememberInfiniteTransition(label = "pulse")
     val scale by infiniteTransition.animateFloat(
         initialValue = 1f,
-        targetValue = 1.4f, // Lo subo a 1.4 para que el efecto sea más claro
+        targetValue = 1.4f,
         animationSpec = infiniteRepeatable(
             animation = tween(1000),
             repeatMode = RepeatMode.Reverse
@@ -305,23 +305,19 @@ fun RecordingView(onStopClick: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             contentAlignment = Alignment.Center,
-            // Fijamos el tamaño del contenedor para que NADA se mueva fuera
             modifier = Modifier.size(100.dp)
         ) {
-            // Círculo de pulso (Fondo)
             Box(
                 modifier = Modifier
-                    .size(64.dp) // Tamaño fijo
+                    .size(64.dp)
                     .graphicsLayer {
                         scaleX = scale
                         scaleY = scale
-                        // Opcional: que se desvanezca mientras crece
                         alpha = 1f - ((scale - 1f) * 2f).coerceIn(0f, 1f)
                     }
                     .background(Color.Red.copy(alpha = 0.4f), CircleShape)
             )
 
-            // Botón central (No escala para que sea fácil de pulsar)
             IconButton(
                 onClick = onStopClick,
                 modifier = Modifier
