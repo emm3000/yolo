@@ -51,6 +51,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -59,6 +60,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.emm.yolo.presentation.feature.log.recorder.AudioRecord
 import com.emm.yolo.presentation.theme.YoloTheme
 
 @Composable
@@ -77,53 +79,13 @@ fun LogEnglishSessionScreen(
             .padding(24.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(
-                    "Log Session",
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = Color.White
-                )
-                Text(
-                    text = state.currentDateTime.toString(),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
-                )
-            }
-            IconButton(onClick = onBack) {
-                Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.White)
-            }
-        }
+        HeaderLog(state = state, onBack = onBack)
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Text("Category", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
-        FlowRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            PracticeType.entries.forEach { category ->
-                FilterChip(
-                    selected = category == state.practiceType,
-                    onClick = {
-                        onAction(LogEnglishSessionAction.SetPracticeType(category))
-                    },
-                    label = { Text(category.label) },
-                    colors = FilterChipDefaults.filterChipColors(
-                        containerColor = Color(0xFF2D3033),
-                        labelColor = Color.White,
-                    )
-                )
-            }
-        }
+        CategoryPickerSection(state = state, onAction = onAction)
 
-        Spacer(modifier = Modifier.height(24.dp))
+        DurationPickerSection(state = state, onAction = onAction)
 
         Text("Evidence", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
         Surface(
@@ -150,16 +112,32 @@ fun LogEnglishSessionScreen(
                         PlayerState.Recording -> RecordingView {
                             onAction(LogEnglishSessionAction.StopRecording)
                         }
-                        PlayerState.Reviewing -> PreviewView(
-                            duration = 28,
-                            isPlaying = state.isPlaying,
-                            playAudio = { onAction(LogEnglishSessionAction.PauseAudio) },
-                            deleteAudio = { onAction(LogEnglishSessionAction.DeleteAudio) }
-                        )
                     }
                 }
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 20.dp), color = Color.White.copy(alpha = 0.1f))
+
+                Column(
+                    modifier = Modifier,
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    state.records.forEach {
+                        key(it.name) {
+                            PreviewView(
+                                duration = it.durationMs.toInt(),
+                                isPlaying = state.isPlaying && state.currentRecord == it,
+                                playAudio = {
+                                    onAction(LogEnglishSessionAction.PlayAudio(it))
+                                },
+                                deleteAudio = {
+                                    onAction(LogEnglishSessionAction.DeleteAudio(it))
+                                },
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
 
                 TextField(
                     value = state.notes,
@@ -177,32 +155,7 @@ fun LogEnglishSessionScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Text("Duration", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Duration.entries.forEach { time ->
-                val isSelected = time == state.duration
-
-                OutlinedButton(
-                    onClick = {
-                        onAction(LogEnglishSessionAction.SetDuration(time))
-                    },
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = if (isSelected) Color(0xFF43E188) else Color(0xFF2D3033),
-                        contentColor = Color.White
-                    ),
-                    border = if (isSelected) null else outlinedButtonBorder(true),
-                ) {
-                    Text(time.label)
-                }
-            }
-        }
+        Spacer(modifier = Modifier.height(5.dp))
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -219,7 +172,6 @@ fun LogEnglishSessionScreen(
             Text("Save Session", color = Color(0xFF00391C), fontWeight = FontWeight.Bold)
         }
 
-        // 7. Copy Psicológico
         Text(
             text = "Consistency > Perfection",
             style = MaterialTheme.typography.labelSmall,
@@ -229,6 +181,90 @@ fun LogEnglishSessionScreen(
             textAlign = TextAlign.Center,
             color = Color.Gray
         )
+    }
+}
+
+@Composable
+private fun DurationPickerSection(
+    state: LogEnglishSessionUiState,
+    onAction: (LogEnglishSessionAction) -> Unit
+) {
+    Text("Duration", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Duration.entries.forEach { time ->
+            val isSelected = time == state.duration
+
+            OutlinedButton(
+                onClick = {
+                    onAction(LogEnglishSessionAction.SetDuration(time))
+                },
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = if (isSelected) Color(0xFF43E188) else Color(0xFF2D3033),
+                    contentColor = Color.White
+                ),
+                border = if (isSelected) null else outlinedButtonBorder(true),
+            ) {
+                Text(time.label)
+            }
+        }
+    }
+}
+
+@Composable
+private fun CategoryPickerSection(
+    state: LogEnglishSessionUiState,
+    onAction: (LogEnglishSessionAction) -> Unit
+) {
+    Text("Category", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        PracticeType.entries.forEach { category ->
+            FilterChip(
+                selected = category == state.practiceType,
+                onClick = {
+                    onAction(LogEnglishSessionAction.SetPracticeType(category))
+                },
+                label = { Text(category.label) },
+                colors = FilterChipDefaults.filterChipColors(
+                    containerColor = Color(0xFF2D3033),
+                    labelColor = Color.White,
+                )
+            )
+        }
+    }
+}
+
+@Composable
+private fun HeaderLog(state: LogEnglishSessionUiState, onBack: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text(
+                "Log Session",
+                style = MaterialTheme.typography.headlineSmall,
+                color = Color.White
+            )
+            Text(
+                text = state.currentDateTime.toString(),
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
+            )
+        }
+        IconButton(onClick = onBack) {
+            Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.White)
+        }
     }
 }
 
@@ -244,7 +280,7 @@ fun IdleView(onClick: () -> Unit) {
             Icon(Icons.Default.Mic, contentDescription = "Record", tint = Color(0xFFD1E4FF))
         }
         Text(
-            "Tap to record voice",
+            text = "Tap to add a voice recording",
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(top = 8.dp),
             color = Color.Gray
@@ -353,8 +389,22 @@ fun PreviewView(
 @Preview
 @Composable
 private fun LogEnglishSessionScreenPreview() {
-    YoloTheme() {
-        LogEnglishSessionScreen(onBack = {})
+    YoloTheme {
+        LogEnglishSessionScreen(
+            state = LogEnglishSessionUiState(
+                records = listOf(
+                    AudioRecord(
+                        path = "accumsan",
+                        name = "Ada Torres",
+                        durationMs = 1121
+                    ),
+                    AudioRecord(
+                        path = "accumsan 2",
+                        name = "Ada Torres 2",
+                        durationMs = 1121
+                    )
+                )
+            )
+        ) {}
     }
-
 }

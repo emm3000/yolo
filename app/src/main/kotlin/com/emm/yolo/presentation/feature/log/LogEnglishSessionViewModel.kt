@@ -9,7 +9,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.emm.yolo.data.Repository
 import com.emm.yolo.presentation.feature.log.recorder.AudioRecord
@@ -30,42 +29,41 @@ class LogEnglishSessionViewModel(
     var state by mutableStateOf(LogEnglishSessionUiState())
         private set
 
-    private val player: ExoPlayer = ExoPlayer.Builder(application).build()
+    private val player: ExoPlayer = ExoPlayer.Builder(application)
+        .build()
+
+    private val dispatcher = PlayerDispatcher(player) {
+        state = state.copy(isPlaying = false, currentRecord = null)
+    }
 
     init {
-        player.addListener(object : Player.Listener {
-            override fun onPlaybackStateChanged(state: Int) {
-                if (state == Player.STATE_ENDED) {
-                    player.seekTo(0)
-                    player.pause()
-                    this@LogEnglishSessionViewModel.state = this@LogEnglishSessionViewModel.state.copy(isPlaying = false)
-                }
-            }
-        })
+        player.addListener(dispatcher)
     }
 
     fun onAction(action: LogEnglishSessionAction) = when (action) {
         LogEnglishSessionAction.Submit -> insertSession()
         is LogEnglishSessionAction.StartRecording -> startRecording()
         is LogEnglishSessionAction.StopRecording -> stopRecording()
-        is LogEnglishSessionAction.PlayAudio -> playReview()
-        is LogEnglishSessionAction.PauseAudio -> toggleAudioReview()
-        is LogEnglishSessionAction.DeleteAudio -> discard()
+        is LogEnglishSessionAction.PlayAudio -> toggleAudioReview(action.record)
+        is LogEnglishSessionAction.PauseAudio -> toggleAudioReview(action.record)
+        is LogEnglishSessionAction.DeleteAudio -> discard(action.record)
         else -> state = reducer(state, action)
     }
 
     fun startRecording() {
+        player.stop()
+        player.clearMediaItems()
         audioRecordMachine.startRecording("temp_audio_${System.currentTimeMillis()}")
-        state = state.copy(playerState = PlayerState.Recording)
+        state = state.copy(playerState = PlayerState.Recording, isPlaying = false, currentRecord = null)
     }
 
     fun stopRecording() {
-        val record: AudioRecord? = audioRecordMachine.stopRecording()
+        val record: AudioRecord = audioRecordMachine.stopRecording() ?: return
         state = state.copy(
-            lastRecord = record,
-            playerState = PlayerState.Reviewing,
+            records = state.records + record,
+            playerState = PlayerState.Idle,
+            isPlaying = false
         )
-        record?.let { preparePlayer(it.path) }
     }
 
     private fun preparePlayer(path: String) {
@@ -75,35 +73,39 @@ class LogEnglishSessionViewModel(
         player.prepare()
     }
 
-    private fun toggleAudioReview() {
+    private fun toggleAudioReview(record: AudioRecord) {
         if (player.isPlaying) {
             player.pause()
             state = state.copy(isPlaying = false)
         } else {
-            player.play()
-            state = state.copy(isPlaying = true)
+            playReview(record)
         }
     }
 
-    fun playReview() {
-        val lastRecord: AudioRecord? = state.lastRecord
-        lastRecord?.let {
+    fun playReview(record: AudioRecord) {
+        if (state.currentRecord == record) {
             player.play()
             state = state.copy(isPlaying = true)
+            return
         }
+
+        preparePlayer(record.path)
+        player.play()
+        state = state.copy(isPlaying = true, currentRecord = record)
     }
 
-    fun discard() {
-        player.stop()
-        player.clearMediaItems()
-        val lastRecord = state.lastRecord
-        lastRecord?.let {
-            audioRecordMachine.deleteRecording(it.path)
+    fun discard(record: AudioRecord) {
+        if (state.currentRecord == record && state.isPlaying) {
+            player.stop()
+            player.clearMediaItems()
         }
+
+        audioRecordMachine.deleteRecording(record.path)
         state = state.copy(
-            lastRecord = null,
+            records = state.records.filterNot { audioRecord -> audioRecord == record },
             playerState = PlayerState.Idle,
-            isPlaying = false,
+            currentRecord = if (state.records == record) null else state.currentRecord,
+            isPlaying = if (state.records == record) false else state.isPlaying,
         )
     }
 
@@ -124,15 +126,14 @@ class LogEnglishSessionViewModel(
                 notes = state.notes,
             )
             val sessionId: Long = repository.insertSession(insertSession)
-            val record: AudioRecord = state.lastRecord ?: return@launch run {
-                state = state.copy(statusMessage = "Log session successfully")
+            state.records.forEach { audioRecord ->
+                repository.insertAudio(
+                    sessionId = sessionId,
+                    filePath = audioRecord.path,
+                    durationSeconds = Random.nextLong(),
+                    prompt = state.notes,
+                )
             }
-            repository.insertAudio(
-                sessionId = sessionId,
-                filePath = record.path,
-                durationSeconds = Random.nextLong(),
-                prompt = state.notes,
-            )
             state = state.copy(statusMessage = "Log session successfully")
         } catch (_: SQLiteConstraintException) {
             state = state.copy(statusMessage = "Actually this session already exists")
@@ -140,6 +141,7 @@ class LogEnglishSessionViewModel(
     }
 
     override fun onCleared() {
+        player.removeListener(dispatcher)
         player.release()
         super.onCleared()
     }

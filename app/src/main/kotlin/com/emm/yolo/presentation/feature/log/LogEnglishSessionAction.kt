@@ -1,5 +1,7 @@
 package com.emm.yolo.presentation.feature.log
 
+import com.emm.yolo.presentation.feature.log.recorder.AudioRecord
+
 sealed interface LogEnglishSessionAction {
 
     data class SetPracticeType(val practiceType: PracticeType) : LogEnglishSessionAction
@@ -12,11 +14,11 @@ sealed interface LogEnglishSessionAction {
 
     object StopRecording : LogEnglishSessionAction
 
-    object PlayAudio : LogEnglishSessionAction
+    data class PlayAudio(val record: AudioRecord) : LogEnglishSessionAction
 
-    object PauseAudio : LogEnglishSessionAction
+    data class PauseAudio(val record: AudioRecord) : LogEnglishSessionAction
 
-    object DeleteAudio : LogEnglishSessionAction
+    data class DeleteAudio(val record: AudioRecord) : LogEnglishSessionAction
 
     object Submit : LogEnglishSessionAction
 }

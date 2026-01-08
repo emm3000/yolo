@@ -1,10 +1,10 @@
 package com.emm.yolo.presentation.feature.log
 
 enum class PracticeType(val label: String) {
-    Speaking("🎙 Speaking"),
-    Listening("🎧 Listening"),
-    Writing("✍️ Writing"),
-    Reading("📖 Reading")
+    Speaking("Speaking"),
+    Listening("Listening"),
+    Writing("Writing"),
+    Reading("Reading")
 }
 
 enum class Duration(

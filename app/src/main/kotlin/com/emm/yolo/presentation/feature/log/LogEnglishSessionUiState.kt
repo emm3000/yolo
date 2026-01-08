@@ -10,6 +10,7 @@ data class LogEnglishSessionUiState(
     val currentDateTime: LocalDateTime = LocalDateTime.now(),
     val statusMessage: String? = null,
     val playerState: PlayerState = PlayerState.Idle,
-    val lastRecord: AudioRecord? = null,
+    val currentRecord: AudioRecord? = null,
+    val records: List<AudioRecord> = emptyList(),
     val isPlaying: Boolean = false,
 )
