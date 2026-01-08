@@ -29,8 +29,7 @@ class LogEnglishSessionViewModel(
     var state by mutableStateOf(LogEnglishSessionUiState())
         private set
 
-    private val player: ExoPlayer = ExoPlayer.Builder(application)
-        .build()
+    private val player: ExoPlayer = ExoPlayer.Builder(application).build()
 
     private val dispatcher = PlayerDispatcher(player) {
         state = state.copy(isPlaying = false, currentRecord = null)
