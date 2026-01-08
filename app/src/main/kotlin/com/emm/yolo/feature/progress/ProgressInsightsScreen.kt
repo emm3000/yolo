@@ -1,4 +1,4 @@
-package com.emm.yolo.feature
+package com.emm.yolo.feature.progress
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

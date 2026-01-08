@@ -23,11 +23,11 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import com.emm.yolo.feature.ProgressInsightsScreen
 import com.emm.yolo.feature.history.PracticeHistoryScreen
 import com.emm.yolo.feature.history.PracticeHistoryViewModel
 import com.emm.yolo.feature.home.EnglishHome
 import com.emm.yolo.feature.home.EnglishHomeViewModel
+import com.emm.yolo.feature.progress.ProgressInsightsScreen
 import com.emm.yolo.share.theme.BackgroundColor
 import org.koin.androidx.compose.koinViewModel
 

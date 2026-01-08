@@ -14,9 +14,9 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import com.emm.yolo.feature.PracticeRulesScreen
 import com.emm.yolo.feature.log.LogEnglishSessionScreen
 import com.emm.yolo.feature.log.LogEnglishSessionViewModel
+import com.emm.yolo.feature.practice.PracticeRulesScreen
 import com.emm.yolo.share.ResultEffect
 import com.emm.yolo.share.ResultEventBus
 import org.koin.androidx.compose.koinViewModel

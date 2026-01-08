@@ -1,4 +1,4 @@
-package com.emm.yolo.feature
+package com.emm.yolo.feature.practice
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
