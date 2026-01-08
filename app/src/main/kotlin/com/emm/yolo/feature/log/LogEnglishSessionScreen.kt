@@ -122,16 +122,16 @@ fun LogEnglishSessionScreen(
                     modifier = Modifier,
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    state.records.forEach {
-                        key(it.name) {
+                    state.records.forEach { record ->
+                        key(record.name) {
                             PreviewView(
-                                duration = it.durationMs.toInt(),
-                                isPlaying = state.isPlaying && state.currentRecord == it,
+                                duration = record.durationMs.toInt(),
+                                isPlaying = state.isPlaying && state.currentRecord == record,
                                 playAudio = {
-                                    onAction(LogEnglishSessionAction.PlayAudio(it))
+                                    onAction(LogEnglishSessionAction.PlayAudio(record))
                                 },
                                 deleteAudio = {
-                                    onAction(LogEnglishSessionAction.DeleteAudio(it))
+                                    onAction(LogEnglishSessionAction.DeleteAudio(record))
                                 },
                             )
                         }
