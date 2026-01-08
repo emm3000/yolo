@@ -61,6 +61,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emm.yolo.feature.log.recorder.AudioRecord
+import com.emm.yolo.share.theme.BackgroundColor
 import com.emm.yolo.share.theme.YoloTheme
 
 @Composable
@@ -73,7 +74,7 @@ fun LogEnglishSessionScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF1A1C1E))
+            .background(BackgroundColor)
             .statusBarsPadding()
             .navigationBarsPadding()
             .padding(24.dp)

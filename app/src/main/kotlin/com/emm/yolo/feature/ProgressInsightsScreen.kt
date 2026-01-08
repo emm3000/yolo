@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.emm.yolo.share.theme.BackgroundColor
 import com.emm.yolo.share.theme.YoloTheme
 
 @Composable
@@ -36,7 +37,7 @@ fun ProgressInsightsScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF1A1C1E))
+            .background(BackgroundColor)
             .padding(horizontal = 20.dp)
             .verticalScroll(rememberScrollState())
     ) {

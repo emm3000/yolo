@@ -28,6 +28,7 @@ import com.emm.yolo.feature.history.PracticeHistoryScreen
 import com.emm.yolo.feature.history.PracticeHistoryViewModel
 import com.emm.yolo.feature.home.EnglishHome
 import com.emm.yolo.feature.home.EnglishHomeViewModel
+import com.emm.yolo.share.theme.BackgroundColor
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -86,7 +87,7 @@ fun MainRoot(
 private fun Csm(navigationState: NavigationState, navigator: Navigator) {
 
     NavigationBar(
-        containerColor = Color(0xFF1A1C1E),
+        containerColor = BackgroundColor,
         contentColor = Color.White,
     ) {
         TOP_LEVEL_ROUTES.forEach { (key: NavKey, value: NavBarItem) ->

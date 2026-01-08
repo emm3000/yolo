@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.emm.yolo.share.theme.BackgroundColor
 import com.emm.yolo.share.theme.YoloTheme
 
 @Composable
@@ -41,10 +42,10 @@ fun EnglishHome(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF1A1C1E))
+            .background(BackgroundColor)
             .padding(24.dp)
     ) {
-        // 1. Header
+
         Column(modifier = Modifier.padding(vertical = 16.dp)) {
             Text(
                 text = "Daily English",
@@ -92,7 +93,6 @@ fun EnglishHome(
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        // 3. Progreso acumulado (Métricas crudas)
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -104,7 +104,6 @@ fun EnglishHome(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // 5. Refuerzo cognitivo
         Text(
             text = "Consistency beats intensity.",
             style = MaterialTheme.typography.bodySmall,
@@ -118,7 +117,6 @@ fun EnglishHome(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 4. Acción Principal
         Button(
             onClick = navigateToLogSession,
             modifier = Modifier
