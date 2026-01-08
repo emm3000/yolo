@@ -8,5 +8,15 @@ sealed interface LogEnglishSessionAction {
 
     data class SetNotes(val notes: String) : LogEnglishSessionAction
 
+    object StartRecording : LogEnglishSessionAction
+
+    object StopRecording : LogEnglishSessionAction
+
+    object PlayAudio : LogEnglishSessionAction
+
+    object PauseAudio : LogEnglishSessionAction
+
+    object DeleteAudio : LogEnglishSessionAction
+
     object Submit : LogEnglishSessionAction
 }

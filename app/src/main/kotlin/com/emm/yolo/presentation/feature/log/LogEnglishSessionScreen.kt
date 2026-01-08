@@ -1,7 +1,18 @@
 package com.emm.yolo.presentation.feature.log
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -13,6 +24,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +32,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonDefaults.outlinedButtonBorder
@@ -32,12 +46,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -108,7 +125,6 @@ fun LogEnglishSessionScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 3. Registro Principal (El núcleo)
         Text("Evidence", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
         Surface(
             modifier = Modifier
@@ -118,20 +134,30 @@ fun LogEnglishSessionScreen(
             color = Color(0xFF2D3033)
         ) {
             Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                IconButton(
-                    onClick = { /* Iniciar grabación */ },
-                    modifier = Modifier
-                        .size(64.dp)
-                        .background(Color(0xFF44474A), CircleShape)
-                ) {
-                    Icon(Icons.Default.Mic, contentDescription = "Record", tint = Color(0xFFD1E4FF))
+
+                AnimatedContent(
+                    targetState = state.playerState,
+                    transitionSpec = {
+                        (fadeIn(animationSpec = tween(300)) + scaleIn(initialScale = 0.9f)
+                        ) togetherWith fadeOut(animationSpec = tween(200))
+                    },
+                    label = "AudioStateAnimation"
+                ) { targetState: PlayerState ->
+                    when (targetState) {
+                        PlayerState.Idle -> IdleView {
+                            onAction(LogEnglishSessionAction.StartRecording)
+                        }
+                        PlayerState.Recording -> RecordingView {
+                            onAction(LogEnglishSessionAction.StopRecording)
+                        }
+                        PlayerState.Reviewing -> PreviewView(
+                            duration = 28,
+                            isPlaying = state.isPlaying,
+                            playAudio = { onAction(LogEnglishSessionAction.PauseAudio) },
+                            deleteAudio = { onAction(LogEnglishSessionAction.DeleteAudio) }
+                        )
+                    }
                 }
-                Text(
-                    "Tap to record voice",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(top = 8.dp),
-                    color = Color.Gray
-                )
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 20.dp), color = Color.White.copy(alpha = 0.1f))
 
@@ -203,6 +229,124 @@ fun LogEnglishSessionScreen(
             textAlign = TextAlign.Center,
             color = Color.Gray
         )
+    }
+}
+
+@Composable
+fun IdleView(onClick: () -> Unit) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        IconButton(
+            onClick = onClick,
+            modifier = Modifier
+                .size(64.dp)
+                .background(Color(0xFF44474A), CircleShape)
+        ) {
+            Icon(Icons.Default.Mic, contentDescription = "Record", tint = Color(0xFFD1E4FF))
+        }
+        Text(
+            "Tap to record voice",
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(top = 8.dp),
+            color = Color.Gray
+        )
+    }
+}
+
+@Composable
+fun RecordingView(onStopClick: () -> Unit) {
+    val infiniteTransition = rememberInfiniteTransition(label = "pulse")
+    val scale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.4f, // Lo subo a 1.4 para que el efecto sea más claro
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "scale"
+    )
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(
+            contentAlignment = Alignment.Center,
+            // Fijamos el tamaño del contenedor para que NADA se mueva fuera
+            modifier = Modifier.size(100.dp)
+        ) {
+            // Círculo de pulso (Fondo)
+            Box(
+                modifier = Modifier
+                    .size(64.dp) // Tamaño fijo
+                    .graphicsLayer {
+                        scaleX = scale
+                        scaleY = scale
+                        // Opcional: que se desvanezca mientras crece
+                        alpha = 1f - ((scale - 1f) * 2f).coerceIn(0f, 1f)
+                    }
+                    .background(Color.Red.copy(alpha = 0.4f), CircleShape)
+            )
+
+            // Botón central (No escala para que sea fácil de pulsar)
+            IconButton(
+                onClick = onStopClick,
+                modifier = Modifier
+                    .size(64.dp)
+                    .background(Color.Red, CircleShape)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Stop,
+                    contentDescription = "Stop",
+                    tint = Color.White
+                )
+            }
+        }
+
+        Text(
+            "Recording...",
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(top = 8.dp),
+            color = Color.Red
+        )
+    }
+}
+
+@Composable
+fun PreviewView(
+    duration: Int,
+    isPlaying: Boolean,
+    playAudio: () -> Unit = {},
+    deleteAudio: () -> Unit = {}
+) {
+
+    val icon = if (isPlaying.not()) Icons.Default.PlayArrow else Icons.Default.Stop
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(64.dp)
+            .background(Color(0xFF3D4146), RoundedCornerShape(32.dp))
+            .padding(horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            onClick = playAudio,
+            modifier = Modifier
+                .size(48.dp)
+                .background(Color(0xFFD1E4FF), CircleShape)
+        ) {
+            Icon(icon, contentDescription = "Play", tint = Color.Black)
+        }
+
+        Spacer(Modifier.width(12.dp))
+
+        Column {
+            Text("Recording ready", style = MaterialTheme.typography.labelMedium, color = Color.White)
+            Text("${duration}s", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+        }
+
+        Spacer(Modifier.weight(1f))
+
+        TextButton(onClick = deleteAudio) {
+            Text("Delete", color = Color(0xFFFFB4AB))
+        }
     }
 }
 

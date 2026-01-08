@@ -1,5 +1,6 @@
 package com.emm.yolo.presentation.feature.log
 
+import com.emm.yolo.presentation.feature.log.recorder.AudioRecord
 import java.time.LocalDateTime
 
 data class LogEnglishSessionUiState(
@@ -8,4 +9,7 @@ data class LogEnglishSessionUiState(
     val notes: String = "",
     val currentDateTime: LocalDateTime = LocalDateTime.now(),
     val statusMessage: String? = null,
+    val playerState: PlayerState = PlayerState.Idle,
+    val lastRecord: AudioRecord? = null,
+    val isPlaying: Boolean = false,
 )

@@ -13,8 +13,9 @@ import kotlinx.coroutines.withContext
 class Repository(db: EmmDatabaseData) {
 
     private val sessionDao = db.englishSessionQueries
+    private val audioDao = db.audioPracticeQueries
 
-    suspend fun insertSession(insertSession: InsertSession) = withContext(Dispatchers.IO) {
+    suspend fun insertSession(insertSession: InsertSession): Long = withContext(Dispatchers.IO) {
         sessionDao.insertSession(
             session_date = insertSession.sessionDate,
             session_hour = insertSession.sessionHour,
@@ -25,6 +26,24 @@ class Repository(db: EmmDatabaseData) {
             notes = insertSession.notes,
             created_at = currentTimeInMillis(),
             updated_at = currentTimeInMillis(),
+        )
+        val executeAsOne: EnglishSession = sessionDao.selectByDate(insertSession.sessionDate)
+            .executeAsOne()
+        return@withContext executeAsOne.id
+    }
+
+    suspend fun insertAudio(
+        sessionId: Long,
+        filePath: String,
+        durationSeconds: Long,
+        prompt: String?
+    ) = withContext(Dispatchers.IO) {
+        audioDao.insertAudioPractice(
+            session_id = sessionId,
+            file_path = filePath,
+            duration_seconds = durationSeconds,
+            prompt = prompt,
+            created_at = currentTimeInMillis(),
         )
     }
 

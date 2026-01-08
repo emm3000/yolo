@@ -1,5 +1,8 @@
 package com.emm.yolo.presentation.nav
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -12,6 +15,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -20,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -76,6 +81,29 @@ fun RootNav() {
                     if (vm.state.statusMessage != null) {
                         resultBus.sendResult(result = vm.state.statusMessage)
                         navBackStack.removeLastOrNull()
+                    }
+                }
+
+                val launcher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestPermission(),
+                    onResult = {
+
+                    }
+                )
+
+                LaunchedEffect(Unit) {
+                    launcher.launch(Manifest.permission.RECORD_AUDIO)
+                }
+
+                DisposableEffect(Unit) {
+                    onDispose {
+                        vm.stopRecording()
+                    }
+                }
+
+                LifecycleStartEffect(Unit) {
+                    onStopOrDispose {
+                        vm.stopRecording()
                     }
                 }
 
