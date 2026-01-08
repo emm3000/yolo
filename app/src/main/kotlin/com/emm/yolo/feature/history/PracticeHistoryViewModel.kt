@@ -6,60 +6,15 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emm.yolo.EnglishSession
-import com.emm.yolo.feature.log.Duration
-import com.emm.yolo.feature.log.LogRepository
+import com.emm.yolo.data.LogRepository
 import com.emm.yolo.feature.log.PracticeType
 import com.emm.yolo.feature.log.toDuration
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import java.time.Instant
-import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-
-data class EnglishSessionUi(
-    val id: Long,
-    val sessionDate: LocalDate,
-    val sessionHour: LocalTime,
-    val minutesPracticed: Duration,
-    val practiceType: PracticeType,
-    val confidenceLevel: Long,
-    val discomfortLevel: Long,
-    val notes: String?,
-    val createdAt: Long,
-    val updatedAt: Long,
-) {
-
-    val formattedSessionDate: String
-        get() {
-            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-            return formatter.format(sessionDate)
-        }
-
-    val formattedSessionHour: String
-        get() {
-            val formatter = DateTimeFormatter.ofPattern("HH:mm")
-            return sessionHour.format(formatter)
-        }
-}
-
-data class PracticeHistoryUiState(
-    val thisWeek: String = "-",
-    val streak: String = "-",
-    val avgTime: Duration? = null,
-    val sessions: List<EnglishSessionUi> = emptyList(),
-    val filteredSessions: List<EnglishSessionUi> = emptyList(),
-    val selectedPracticeType: PracticeType? = null,
-)
-
-sealed interface PracticeHistoryAction {
-
-    object AllPracticeTypes : PracticeHistoryAction
-
-    data class PickPracticeType(val practiceType: PracticeType) : PracticeHistoryAction
-}
 
 class PracticeHistoryViewModel(private val logRepository: LogRepository) : ViewModel() {
 
