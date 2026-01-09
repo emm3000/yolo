@@ -29,7 +29,7 @@ import com.emm.yolo.feature.home.EnglishHome
 import com.emm.yolo.feature.home.EnglishHomeViewModel
 import com.emm.yolo.feature.progress.ProgressInsightsScreen
 import com.emm.yolo.share.theme.BackgroundColor
-import com.emm.yolo.share.theme.GrayYolo
+import com.emm.yolo.share.theme.GrayYoloColor
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -69,7 +69,7 @@ fun MainRoot(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState) { snackbarData ->
                 Snackbar(
-                    containerColor = GrayYolo,
+                    containerColor = GrayYoloColor,
                     contentColor = Color.White,
                     snackbarData = snackbarData
                 )

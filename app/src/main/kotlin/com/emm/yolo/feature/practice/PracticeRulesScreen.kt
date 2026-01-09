@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.emm.yolo.share.theme.BackgroundColor
+import com.emm.yolo.share.theme.DeepBlueColor
 import com.emm.yolo.share.theme.PrimaryColor
 import com.emm.yolo.share.theme.YoloTheme
 
@@ -193,7 +194,7 @@ fun ConfigChip(label: String, isSelected: Boolean) {
             label,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             style = MaterialTheme.typography.bodySmall,
-            color = if (isSelected) Color(0xFF003147) else Color.White
+            color = if (isSelected) DeepBlueColor else Color.White
         )
     }
 }

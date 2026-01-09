@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emm.yolo.feature.log.PracticeType
 import com.emm.yolo.share.theme.BackgroundColor
+import com.emm.yolo.share.theme.DeepBlueColor
 import com.emm.yolo.share.theme.PrimaryColor
 import com.emm.yolo.share.theme.YoloTheme
 
@@ -147,7 +148,7 @@ fun SessionItem(
                         style = MaterialTheme.typography.labelSmall,
                         color = PrimaryColor,
                         modifier = Modifier
-                            .background(Color(0xFF003147), RoundedCornerShape(4.dp))
+                            .background(DeepBlueColor, RoundedCornerShape(4.dp))
                             .padding(horizontal = 6.dp, vertical = 2.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
@@ -187,7 +188,7 @@ fun FilterChipMinimal(
             text = label,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
             style = MaterialTheme.typography.labelMedium,
-            color = if (isSelected) Color(0xFF003147) else Color.Gray
+            color = if (isSelected) DeepBlueColor else Color.Gray
         )
     }
 }

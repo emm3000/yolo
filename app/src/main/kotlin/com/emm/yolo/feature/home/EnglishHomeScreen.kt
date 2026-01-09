@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emm.yolo.share.theme.BackgroundColor
+import com.emm.yolo.share.theme.DeepBlueColor
 import com.emm.yolo.share.theme.YoloTheme
 
 @Composable
@@ -128,12 +129,12 @@ fun EnglishHome(
             Icon(
                 imageVector = Icons.Default.Mic,
                 contentDescription = null,
-                tint = Color(0xFF003147)
+                tint = DeepBlueColor
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                "Log English Session",
-                color = Color(0xFF003147),
+                text = "Log English Session",
+                color = DeepBlueColor,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )

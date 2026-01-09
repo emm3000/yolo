@@ -30,7 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emm.yolo.share.theme.BackgroundColor
-import com.emm.yolo.share.theme.GrayYolo
+import com.emm.yolo.share.theme.GrayYoloColor
 import com.emm.yolo.share.theme.PrimaryColor
 import com.emm.yolo.share.theme.YoloTheme
 
@@ -81,7 +81,7 @@ fun ProgressInsightsScreen() {
         Spacer(modifier = Modifier.height(24.dp))
 
         Surface(
-            color = GrayYolo,
+            color = GrayYoloColor,
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -209,7 +209,7 @@ fun PracticeDistributionChart(data: Map<String, Float>) {
                         .height(6.dp)
                         .clip(CircleShape),
                     color = if (percentage < 0.20f) Color(0xFFBA1A1A) else PrimaryColor,
-                    trackColor = GrayYolo
+                    trackColor = GrayYoloColor
                 )
             }
         }
