@@ -6,5 +6,7 @@ interface AudioRecordMachine {
 
     fun stopRecording(): AudioRecord?
 
+    fun stopAndDelete()
+
     fun deleteRecording(fileName: String)
 }

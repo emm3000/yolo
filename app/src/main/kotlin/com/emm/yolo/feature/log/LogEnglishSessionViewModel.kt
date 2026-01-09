@@ -54,6 +54,10 @@ class LogEnglishSessionViewModel(
         )
     }
 
+    fun stopAndDeleteRecording() {
+        audioRecordMachine.stopAndDelete()
+    }
+
     private fun toggleAudioReview(record: AudioRecord) {
         if (player.isPlaying) {
             player.pause()

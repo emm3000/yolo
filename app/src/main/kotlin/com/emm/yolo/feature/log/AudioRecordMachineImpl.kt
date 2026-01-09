@@ -46,6 +46,11 @@ class AudioRecordMachineImpl(private val context: Context) : AudioRecordMachine 
         }
     }
 
+    override fun stopAndDelete() {
+        val record: AudioRecord? = stopRecording()
+        record?.let { deleteRecording(it.path) }
+    }
+
     override fun deleteRecording(fileName: String) {
         val file = File(fileName)
         if (file.exists()) file.delete()
