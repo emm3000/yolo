@@ -3,8 +3,8 @@ package com.emm.yolo.feature.history
 import com.emm.yolo.feature.log.Duration
 import com.emm.yolo.feature.log.PracticeType
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 data class EnglishSessionUi(
     val id: Long,
@@ -22,14 +22,8 @@ data class EnglishSessionUi(
 ) {
 
     val formattedSessionDate: String
-        get() {
-            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-            return formatter.format(sessionDate)
-        }
+        get() = sessionDate.toFriendlyDate()
 
     val formattedSessionHour: String
-        get() {
-            val formatter = DateTimeFormatter.ofPattern("HH:mm")
-            return sessionHour.format(formatter)
-        }
+        get() = LocalDateTime.of(sessionDate, sessionHour).toTimeAgo()
 }
