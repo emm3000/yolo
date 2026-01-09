@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emm.yolo.feature.log.PracticeType
 import com.emm.yolo.share.theme.BackgroundColor
+import com.emm.yolo.share.theme.PrimaryColor
 import com.emm.yolo.share.theme.YoloTheme
 
 @Composable
@@ -144,7 +145,7 @@ fun SessionItem(
                     Text(
                         text = type,
                         style = MaterialTheme.typography.labelSmall,
-                        color = Color(0xFFA8C7FF),
+                        color = PrimaryColor,
                         modifier = Modifier
                             .background(Color(0xFF003147), RoundedCornerShape(4.dp))
                             .padding(horizontal = 6.dp, vertical = 2.dp)

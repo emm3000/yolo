@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emm.yolo.share.theme.BackgroundColor
+import com.emm.yolo.share.theme.PrimaryColor
 import com.emm.yolo.share.theme.YoloTheme
 
 @Composable
@@ -84,7 +85,7 @@ fun ProgressInsightsScreen() {
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text("System Observation:", style = MaterialTheme.typography.labelSmall, color = Color(0xFFA8C7FF))
+                Text("System Observation:", style = MaterialTheme.typography.labelSmall, color = PrimaryColor)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     "Speaking sessions are 70% less frequent than Listening. Potential friction detected in oral practice.",
@@ -130,7 +131,7 @@ fun SimpleActivityChart() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text("Last 14 Days", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
-                Text("Total: 4.2h", style = MaterialTheme.typography.labelSmall, color = Color(0xFFA8C7FF))
+                Text("Total: 4.2h", style = MaterialTheme.typography.labelSmall, color = PrimaryColor)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -156,7 +157,7 @@ fun SimpleActivityChart() {
                             .background(
                                 when {
                                     heightMultiplier >= 0.8f -> Color(0xFF43E188)
-                                    heightMultiplier > 0.0f -> Color(0xFFA8C7FF)
+                                    heightMultiplier > 0.0f -> PrimaryColor
                                     else -> Color(0xFF370000)
                                 }
                             )
@@ -206,7 +207,7 @@ fun PracticeDistributionChart(data: Map<String, Float>) {
                         .fillMaxWidth()
                         .height(6.dp)
                         .clip(CircleShape),
-                    color = if (percentage < 0.20f) Color(0xFFBA1A1A) else Color(0xFFA8C7FF),
+                    color = if (percentage < 0.20f) Color(0xFFBA1A1A) else PrimaryColor,
                     trackColor = Color(0xFF2D3033)
                 )
             }

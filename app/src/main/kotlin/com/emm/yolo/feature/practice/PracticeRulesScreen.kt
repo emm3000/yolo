@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.emm.yolo.share.theme.BackgroundColor
+import com.emm.yolo.share.theme.PrimaryColor
 import com.emm.yolo.share.theme.YoloTheme
 
 @Composable
@@ -101,7 +102,7 @@ fun PracticeRulesScreen() {
                     Switch(
                         checked = true,
                         onCheckedChange = {},
-                        colors = SwitchDefaults.colors(checkedThumbColor = Color(0xFFA8C7FF))
+                        colors = SwitchDefaults.colors(checkedThumbColor = PrimaryColor)
                     )
                 }
             }
@@ -132,7 +133,7 @@ fun PracticeRulesScreen() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text("Daily reminder", color = Color.White)
-            Text("21:00", color = Color(0xFFA8C7FF), fontWeight = FontWeight.Bold)
+            Text("21:00", color = PrimaryColor, fontWeight = FontWeight.Bold)
         }
 
         Spacer(modifier = Modifier.height(40.dp))
@@ -175,7 +176,7 @@ fun RuleSectionTitle(text: String) {
 @Composable
 fun BulletPoint(text: String) {
     Row(modifier = Modifier.padding(vertical = 4.dp)) {
-        Text("•", color = Color(0xFFA8C7FF), modifier = Modifier.padding(end = 8.dp))
+        Text("•", color = PrimaryColor, modifier = Modifier.padding(end = 8.dp))
         Text(text, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
     }
 }
