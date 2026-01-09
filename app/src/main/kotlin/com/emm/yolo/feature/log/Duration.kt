@@ -14,3 +14,7 @@ enum class Duration(
 fun Long.toDuration(): Duration {
     return Duration.entries.find { it.minutes == this } ?: Duration.FiveMinutes
 }
+
+fun Duration.toNormalized(maxMinutes: Long = 30): Float {
+    return (this.minutes.toFloat() / maxMinutes).coerceIn(0f, 1f)
+}

@@ -9,6 +9,7 @@ import com.emm.yolo.feature.log.AudioPlayer
 import com.emm.yolo.feature.log.AudioRecordMachine
 import com.emm.yolo.feature.log.AudioRecordMachineImpl
 import com.emm.yolo.feature.log.LogEnglishSessionViewModel
+import com.emm.yolo.feature.progress.ProgressInsightsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -21,6 +22,7 @@ val mainModule = module {
     viewModelOf(::LogEnglishSessionViewModel)
     viewModelOf(::EnglishHomeViewModel)
     viewModelOf(::PracticeHistoryViewModel)
+    viewModelOf(::ProgressInsightsViewModel)
 
     singleOf(::LogRepository)
 

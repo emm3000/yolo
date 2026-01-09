@@ -29,13 +29,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.emm.yolo.feature.log.PracticeType
 import com.emm.yolo.share.theme.BackgroundColor
 import com.emm.yolo.share.theme.GrayYoloColor
 import com.emm.yolo.share.theme.PrimaryColor
 import com.emm.yolo.share.theme.YoloTheme
+import kotlin.math.roundToInt
 
 @Composable
-fun ProgressInsightsScreen() {
+fun ProgressInsightsScreen(state: ProgressInsightsUiState = ProgressInsightsUiState()) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,6 +46,7 @@ fun ProgressInsightsScreen() {
             .padding(horizontal = 20.dp)
             .verticalScroll(rememberScrollState())
     ) {
+
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "Progress Insights",
@@ -54,9 +58,7 @@ fun ProgressInsightsScreen() {
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
         )
-
         Spacer(modifier = Modifier.height(24.dp))
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -69,14 +71,12 @@ fun ProgressInsightsScreen() {
         Spacer(modifier = Modifier.height(24.dp))
 
         Text("Skill Distribution", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
-        PracticeDistributionChart(
-            mapOf("Speaking" to 0.15f, "Listening" to 0.50f, "Writing" to 0.10f, "Reading" to 0.25f)
-        )
+        PracticeDistributionChart(state.skillDistribution)
 
         Spacer(modifier = Modifier.height(24.dp))
 
         Text("Weekly Activity", style = MaterialTheme.typography.labelMedium, color = Color.Gray)
-        SimpleActivityChart()
+        ActivityOverview(totalHours = state.totalHours, weeklyData = state.last14DaysActivity)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -117,7 +117,10 @@ fun ProgressInsightsScreen() {
 }
 
 @Composable
-fun SimpleActivityChart() {
+fun ActivityOverview(
+    totalHours: String,
+    weeklyData: List<Float> = listOf()
+) {
     Surface(
         color = Color(0xFF222427),
         shape = RoundedCornerShape(8.dp),
@@ -132,7 +135,7 @@ fun SimpleActivityChart() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text("Last 14 Days", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
-                Text("Total: 4.2h", style = MaterialTheme.typography.labelSmall, color = PrimaryColor)
+                Text("Total: $totalHours", style = MaterialTheme.typography.labelSmall, color = PrimaryColor)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -144,12 +147,7 @@ fun SimpleActivityChart() {
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.Bottom
             ) {
-                val weeklyData = listOf(
-                    0.2f, 0.5f, 0.8f, 0.1f, 0.0f, 0.9f, 0.4f,
-                    0.6f, 1.0f, 0.3f, 0.0f, 0.7f, 0.5f, 0.2f
-                )
-
-                weeklyData.forEach { heightMultiplier ->
+                weeklyData.forEach { heightMultiplier: Float ->
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -194,13 +192,17 @@ fun InsightCard(label: String, value: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun PracticeDistributionChart(data: Map<String, Float>) {
+fun PracticeDistributionChart(data: Map<PracticeType, Float>) {
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
-        data.forEach { (skill, percentage) ->
+        data.forEach { (skill: PracticeType, percentage: Float) ->
             Column(modifier = Modifier.padding(vertical = 4.dp)) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text(skill, style = MaterialTheme.typography.bodySmall, color = Color.White)
-                    Text("${(percentage * 100).toInt()}%", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                    Text(
+                        text = skill.label,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White
+                    )
+                    Text(text = "${(percentage * 100).roundToInt()}%", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
                 }
                 LinearProgressIndicator(
                     progress = { percentage },
@@ -220,6 +222,13 @@ fun PracticeDistributionChart(data: Map<String, Float>) {
 @Composable
 private fun ProgressInsightsScreenPreview() {
     YoloTheme {
-        ProgressInsightsScreen()
+        ProgressInsightsScreen(
+            state = ProgressInsightsUiState(
+                skillDistribution = mapOf(
+                    PracticeType.Speaking to .5f,
+                    PracticeType.Listening to 0.3f,
+                )
+            )
+        )
     }
 }

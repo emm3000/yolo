@@ -28,6 +28,7 @@ import com.emm.yolo.feature.history.PracticeHistoryViewModel
 import com.emm.yolo.feature.home.EnglishHome
 import com.emm.yolo.feature.home.EnglishHomeViewModel
 import com.emm.yolo.feature.progress.ProgressInsightsScreen
+import com.emm.yolo.feature.progress.ProgressInsightsViewModel
 import com.emm.yolo.share.theme.BackgroundColor
 import com.emm.yolo.share.theme.GrayYoloColor
 import org.koin.androidx.compose.koinViewModel
@@ -60,7 +61,9 @@ fun MainRoot(
             )
         }
         entry<InsightsRoute> {
-            ProgressInsightsScreen()
+            val vm: ProgressInsightsViewModel = koinViewModel()
+
+            ProgressInsightsScreen(vm.state)
         }
     }
 
