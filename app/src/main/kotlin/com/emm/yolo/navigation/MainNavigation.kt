@@ -1,6 +1,7 @@
 package com.emm.yolo.navigation
 
 import android.Manifest
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.SnackbarHostState
@@ -8,12 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.lifecycle.compose.LifecycleStartEffect
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.emm.yolo.MainActivity
 import com.emm.yolo.feature.log.LogEnglishSessionScreen
 import com.emm.yolo.feature.log.LogEnglishSessionViewModel
 import com.emm.yolo.feature.practice.PracticeRulesScreen
@@ -70,15 +73,20 @@ fun MainNavigation() {
                     launcher.launch(Manifest.permission.RECORD_AUDIO)
                 }
 
-                DisposableEffect(Unit) {
-                    onDispose {
-                        vm.stopRecording()
-                    }
-                }
+                val mainActivity: MainActivity? = LocalActivity.current as? MainActivity
 
-                LifecycleStartEffect(Unit) {
-                    onStopOrDispose {
-                        vm.stopRecording()
+                DisposableEffect(Unit) {
+                    val observer = LifecycleEventObserver { _, e ->
+                        if (e == Lifecycle.Event.ON_STOP) {
+                            vm.stopRecording()
+                        }
+                    }
+
+                    mainActivity?.lifecycle?.addObserver(observer)
+
+                    onDispose {
+                        mainActivity?.lifecycle?.removeObserver(observer)
+                        vm.stopAndDeleteRecording()
                     }
                 }
 
