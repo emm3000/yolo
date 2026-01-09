@@ -7,7 +7,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 
-fun testDate(): List<InsertSession> {
+fun seed(): List<InsertSession> {
     val date: LocalDate = LocalDate.now()
 
     return (1L..1000L).map {

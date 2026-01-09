@@ -69,9 +69,9 @@ fun PracticeHistoryScreen(
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            SummaryStat("This week", "5")
-            SummaryStat("Streak", "12d")
-            SummaryStat("Avg time", "15m")
+            SummaryStat("This week", state.thisWeek)
+            SummaryStat("Streak", "${state.streak}d")
+            SummaryStat("Avg time", state.avgTime?.label ?: "-")
         }
 
         FlowRow(
@@ -105,7 +105,7 @@ fun PracticeHistoryScreen(
                     date = it.formattedSessionDate,
                     time = it.formattedSessionHour,
                     type = it.practiceType.name,
-                    duration = it.minutesPracticed.label,
+                    duration = it.duration.label,
                     hasAudio = it.hasAudio,
                     hasText = it.notes.isNullOrBlank().not()
                 )

@@ -9,8 +9,9 @@ import java.time.format.DateTimeFormatter
 data class EnglishSessionUi(
     val id: Long,
     val sessionDate: LocalDate,
+    val sessionDateInMillis: Long,
     val sessionHour: LocalTime,
-    val minutesPracticed: Duration,
+    val duration: Duration,
     val practiceType: PracticeType,
     val confidenceLevel: Long,
     val discomfortLevel: Long,
