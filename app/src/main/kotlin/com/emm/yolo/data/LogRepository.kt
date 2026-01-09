@@ -4,6 +4,7 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import com.emm.yolo.EmmDatabaseData
 import com.emm.yolo.EnglishSession
+import com.emm.yolo.SelectAllWithAudioInfo
 import com.emm.yolo.feature.log.InsertSession
 import com.emm.yolo.share.currentTimeInMillis
 import kotlinx.coroutines.Dispatchers
@@ -54,6 +55,12 @@ class LogRepository(db: EmmDatabaseData) {
 
     fun selectAllSessions(): Flow<List<EnglishSession>> {
         return sessionDao.selectAll()
+            .asFlow()
+            .mapToList(Dispatchers.IO)
+    }
+
+    fun selectAllSessionsWithAudio(): Flow<List<SelectAllWithAudioInfo>> {
+        return sessionDao.selectAllWithAudioInfo()
             .asFlow()
             .mapToList(Dispatchers.IO)
     }

@@ -106,7 +106,7 @@ fun PracticeHistoryScreen(
                     time = it.formattedSessionHour,
                     type = it.practiceType.name,
                     duration = it.minutesPracticed.label,
-                    hasAudio = false,
+                    hasAudio = it.hasAudio,
                     hasText = it.notes.isNullOrBlank().not()
                 )
             }

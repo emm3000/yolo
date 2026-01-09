@@ -27,6 +27,17 @@ selectAll:
 SELECT * FROM EnglishSession
 ORDER BY sessionDate DESC;
 
+selectAllWithAudioInfo:
+SELECT
+    es.*,
+    EXISTS (
+        SELECT 1
+        FROM AudioPractice ap
+        WHERE ap.sessionId = es.id
+    ) AS hasAudio
+FROM EnglishSession es
+ORDER BY sessionDate DESC;
+
 selectByDate:
 SELECT * FROM EnglishSession
 WHERE sessionDate = ?;

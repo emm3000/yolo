@@ -15,6 +15,7 @@ data class EnglishSessionUi(
     val confidenceLevel: Long,
     val discomfortLevel: Long,
     val notes: String?,
+    val hasAudio: Boolean,
     val createdAt: Long,
     val updatedAt: Long,
 ) {

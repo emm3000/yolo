@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.emm.yolo.EnglishSession
+import com.emm.yolo.SelectAllWithAudioInfo
 import com.emm.yolo.data.LogRepository
 import com.emm.yolo.feature.log.PracticeType
 import com.emm.yolo.feature.log.toDuration
@@ -37,7 +37,7 @@ class PracticeHistoryViewModel(private val logRepository: LogRepository) : ViewM
     }
 
     fun fetchAll() {
-        logRepository.selectAllSessions()
+        logRepository.selectAllSessionsWithAudio()
             .map(::mapToUi)
             .onEach { sessionUis ->
                 val filteredSession: List<EnglishSessionUi> = filteringSessions(sessionUis)
@@ -46,7 +46,7 @@ class PracticeHistoryViewModel(private val logRepository: LogRepository) : ViewM
             .launchIn(viewModelScope)
     }
 
-    private fun mapToUi(sessions: List<EnglishSession>): List<EnglishSessionUi> = sessions.map { session ->
+    private fun mapToUi(sessions: List<SelectAllWithAudioInfo>): List<EnglishSessionUi> = sessions.map { session ->
         EnglishSessionUi(
             id = session.id,
             sessionDate = Instant
@@ -61,6 +61,7 @@ class PracticeHistoryViewModel(private val logRepository: LogRepository) : ViewM
             notes = session.notes,
             createdAt = session.createdAt,
             updatedAt = session.updatedAt,
+            hasAudio = session.hasAudio,
         )
     }
 
