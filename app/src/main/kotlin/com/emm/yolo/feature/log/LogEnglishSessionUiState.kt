@@ -1,6 +1,8 @@
 package com.emm.yolo.feature.log
 
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 data class LogEnglishSessionUiState(
     val practiceType: PracticeType = PracticeType.entries.first(),
@@ -12,4 +14,11 @@ data class LogEnglishSessionUiState(
     val currentRecord: AudioRecord? = null,
     val records: List<AudioRecord> = emptyList(),
     val isPlaying: Boolean = false,
-)
+) {
+
+    val formattedDate: String
+        get() {
+            val formatter = DateTimeFormatter.ofPattern("EEEE, MMM d, yyyy", Locale.ENGLISH)
+            return currentDateTime.format(formatter)
+        }
+}

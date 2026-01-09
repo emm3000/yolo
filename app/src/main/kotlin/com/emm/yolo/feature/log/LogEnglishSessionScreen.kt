@@ -253,12 +253,12 @@ private fun HeaderLog(state: LogEnglishSessionUiState, onBack: () -> Unit) {
     ) {
         Column {
             Text(
-                "Log Session",
+                text = "Log Session",
                 style = MaterialTheme.typography.headlineSmall,
                 color = Color.White
             )
             Text(
-                text = state.currentDateTime.toString(),
+                text = state.formattedDate,
                 style = MaterialTheme.typography.bodySmall,
                 color = Color.Gray
             )
