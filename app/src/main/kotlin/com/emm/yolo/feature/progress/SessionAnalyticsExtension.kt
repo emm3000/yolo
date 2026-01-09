@@ -5,19 +5,21 @@ import com.emm.yolo.feature.log.PracticeType
 import java.time.LocalDate
 
 fun List<EnglishSessionUi>.practiceTypeProgress(): Map<PracticeType, Float> {
-    val total: Float = size.toFloat()
+    val total = size.toFloat().takeIf { it > 0 } ?: 1f
 
-    return this
+    val counts: Map<PracticeType, Int> = this
         .groupingBy(EnglishSessionUi::practiceType)
         .eachCount()
-        .mapValues { (_, count: Int) ->
-            count / total
-        }
+
+    return PracticeType.entries.associateWith { type ->
+        val count = counts[type] ?: 0
+        count / total
+    }
 }
 
 fun List<EnglishSessionUi>.groupByDay(): Map<LocalDate, Long> {
     return this
-        .groupingBy { it.sessionDate }
+        .groupingBy(EnglishSessionUi::sessionDate)
         .fold(0L) { acc, session -> acc + session.duration.minutes }
 }
 
