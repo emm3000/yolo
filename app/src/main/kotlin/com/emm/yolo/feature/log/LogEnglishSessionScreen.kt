@@ -61,6 +61,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emm.yolo.share.theme.BackgroundColor
+import com.emm.yolo.share.theme.GrayYolo
 import com.emm.yolo.share.theme.YoloTheme
 
 @Composable
@@ -93,7 +94,7 @@ fun LogEnglishSessionScreen(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             shape = RoundedCornerShape(12.dp),
-            color = Color(0xFF2D3033)
+            color = GrayYolo,
         ) {
             Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -204,7 +205,7 @@ private fun DurationPickerSection(
                     onAction(LogEnglishSessionAction.SetDuration(time))
                 },
                 colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = if (isSelected) Color(0xFF43E188) else Color(0xFF2D3033),
+                    containerColor = if (isSelected) Color(0xFF43E188) else GrayYolo,
                     contentColor = Color.White
                 ),
                 border = if (isSelected) null else outlinedButtonBorder(true),
@@ -235,7 +236,7 @@ private fun CategoryPickerSection(
                 },
                 label = { Text(category.label) },
                 colors = FilterChipDefaults.filterChipColors(
-                    containerColor = Color(0xFF2D3033),
+                    containerColor = GrayYolo,
                     labelColor = Color.White,
                 )
             )
